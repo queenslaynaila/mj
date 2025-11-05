@@ -18,6 +18,7 @@ export default function Allergen() {
         heading="Allergens" 
         description="Manage and track allergens." 
       />
+         
     </div>
   );
 }

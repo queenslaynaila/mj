@@ -11,11 +11,26 @@ export const ALLERGENS: Allergen[] = [
 ]
 
 export const CATEGORIES: Category[] = [
-  { id: 1, name: "Smash Burgers" },
+  { id: 1, name: "Burgers" },
   { id: 2, name: "Classic Burgers" },
   { id: 3, name: "Sides" },
   { id: 4, name: "Desserts" },
   { id: 5, name: "Beverages" },
+  { id: 6, name: "Smash Burgers" },
+  { id: 7, name: "Classic Burgers" },
+  { id: 8, name: "Sides" },
+  { id: 9, name: "Desserts" },
+  { id: 10, name: "Beverages" },
+  { id: 11, name: "Smash Burgers" },
+  { id: 12, name: "Classic Burgers" },
+  { id: 13, name: "Sides" },
+  { id: 14, name: "Desserts" },
+  { id: 15, name: "Beverages" },
+  { id: 16, name: "Smash Burgers" },
+  { id: 17, name: "Classic Burgers" },
+  { id: 18, name: "Sides" },
+  { id: 19, name: "Desserts" },
+  { id: 20, name: "Beverages" },
 ]
 
 export const PRODUCTS: Product[] = [

@@ -5,7 +5,6 @@ import { css, cx } from "@linaria/atomic";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { FaAllergies } from "react-icons/fa";
-import { RiAwardLine } from "react-icons/ri";
 import { MdCategory } from "react-icons/md";
 import { MdOutlineMenuBook } from "react-icons/md";
 import { IoIosStats } from "react-icons/io";

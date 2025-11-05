@@ -3,22 +3,19 @@
 import React, { useState } from "react";
 import { css, cx } from "@linaria/atomic";
 import { IoMenuOutline } from "react-icons/io5";
-import {
-  BG_CARD_COLOR,
-  BORDER_COLOR,
-  SHADOW_MEDIUM,
-  TEXT_PRIMARY,
-  THEME_COLOR,
-} from "../../styles/colors";
-import { mqMax } from "../../styles/breakpoints";
-import {
-  FlexBetweenCenterStyles,
-  FlexCenterStyles,
-  FlexColumnStyles,
-} from "../../styles/commonStyles";
 import Sidebar from "./Sidebar";
-
- 
+import { mqMax } from "@/styles/breakpoints";
+import { 
+  FlexBetweenCenterStyles, 
+  FlexCenterStyles, 
+  FlexColumnStyles 
+} from "@/styles/commonStyles";
+import { 
+  BG_CARD_COLOR, 
+  BORDER_COLOR, 
+  SHADOW_MEDIUM, 
+  TEXT_PRIMARY 
+} from "@/styles/colors";
 
 const layoutContainerStyles = css`
   min-height: 100vh;
