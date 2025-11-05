@@ -1,13 +1,13 @@
 "use client";
 
-import { useState } from "react";
-import Header from "@/app/components/Header";
-import { mqMin } from "@/styles/breakpoints";
-import { Category } from "@/types";
-import { CATEGORIES } from "@/data/mock-data";
 import { css } from "@linaria/core";
+import { mqMin } from "@/styles/breakpoints";
+import Header from "@/app/components/Header";
 import EmptyStateMessage from "@/app/components/EmptyStateMessage";
 import DataTable from "@/app/components/DataTable";
+import { Category } from "@/types/categories.types";
+import { useCategories, useCreateCategory, useDeleteCategory } from "@/app/hooks/useCategory";
+
 
 const containerStyles = css`
   padding: 24px;
@@ -33,52 +33,63 @@ const columns = [
     label: "Name",
     render: (category: Category) => category.name,
   },
+   {
+    key: "description",
+    label: "Description",
+    render: (category: Category) => category.description,
+  },
 ];
 
-export default function Home() {
-  const [categories, setCategories] = useState<Category[]>(CATEGORIES);
+export default function CategoriesPage() {
+  const { data: categories = { items: [] }, isLoading, isError } = useCategories();
+  const createCategory = useCreateCategory();
+  const deleteCategory = useDeleteCategory();
+
+  const handleCreate = (newCategory: Omit<Category, "id" | "createdAt" | "updatedAt">) => {
+    const id = newCategory.name.toLowerCase().replace(/\s+/g, "-");
+    createCategory.mutate({
+      id,
+      name: newCategory.name,
+      description: newCategory.description || "",
+    });
+  };
 
   const handleDelete = (id: string | number) => {
-    setCategories(categories.filter((category) => category.id !== id));
+    deleteCategory.mutate(id.toString());
   };
 
   const handleEdit = (category: Category) => {
-    alert(`Editing user: ${category.name}`);
+    alert(`Editing category: ${category.name}`);
   };
 
-  const handleCreate = (newUser: Omit<Category, "id">) => {
-    const newId = Math.max(...categories.map((u) => u.id), 0) + 1;
-    setCategories([...categories, { ...newUser, id: newId }]);
-  };
+  if (isLoading) return <p>Loading...</p>;
+  if (isError) return <p>Failed to load categories.</p>;
 
   return (
     <div className={containerStyles}>
-      <Header
-        heading="Menu Categories"
-        description="Manage and track available menu categories."
-      />
+      <Header heading="Menu Categories" description="Manage and track available menu categories." />
 
-      {categories.length === 0 && (
+      {categories.items.length === 0 ? (
         <EmptyStateMessage
-          title="No Configurations"
-          message="There are currently no configs."
+          title="No Categories"
+          message="There are currently no categories configured."
+        />
+      ) : (
+        <DataTable
+          data={categories.items}
+          columns={columns}
+          searchable={true}
+          onDelete={handleDelete}
+          onEdit={handleEdit}
+          onCreate={handleCreate}
+          searchKeys={["name"]}
+          formFields={formFields}
+          searchPlaceholder="Search categories by name."
+          paginated={true}
+          itemsPerPage={10}
+          deleteConfirmMessage="Are you sure you want to delete this category? This action cannot be undone."
         />
       )}
-
-      <DataTable
-        data={categories}
-        columns={columns}
-        searchable={true}
-        onDelete={handleDelete}
-        onEdit={handleEdit}
-        onCreate={handleCreate}
-        searchKeys={["name"]}
-        formFields={formFields}
-        searchPlaceholder="Search categories by name."
-        paginated={true}
-        itemsPerPage={10}
-        deleteConfirmMessage="Are you sure you want to delete this user? This action cannot be undone."
-      />
     </div>
   );
 }
