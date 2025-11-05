@@ -1,5 +1,3 @@
-"use client"
-
 import type React from "react"
 import { css, cx } from "@linaria/atomic"
 import { useState, useMemo } from "react"
@@ -572,7 +570,9 @@ export default function DataTable<T extends DataItem>({
                   {column.label}
                 </th>
               ))}
-              {showActions && (onEdit || onDelete) && <th className={tableHeadCellStyles}>Actions</th>}
+              {showActions && (onEdit || onDelete) && (
+                <th className={tableHeadCellStyles}>Actions</th>
+              )}
             </tr>
           </thead>
           <tbody>
@@ -671,7 +671,9 @@ export default function DataTable<T extends DataItem>({
       >
         <div className={modalContentStyles} onClick={(e) => e.stopPropagation()}>
           <div className={modalHeaderStyles}>
-            <h2 className={modalTitleStyles}>{formMode === "create" ? "Create New Item" : "Edit Item"}</h2>
+            <h2 className={modalTitleStyles}>
+              {formMode === "create" ? "Create New Item" : "Edit Item"}
+            </h2>
             <button onClick={() => setIsFormModalOpen(false)} className={closeButtonStyles}>
               <FiX size={20} />
             </button>
@@ -713,7 +715,10 @@ export default function DataTable<T extends DataItem>({
                     type={field.type}
                     value={formData[field.key] || ""}
                     onChange={(e) =>
-                      handleInputChange(field.key, field.type === "number" ? Number(e.target.value) : e.target.value)
+                      handleInputChange(
+                        field.key,
+                        field.type === "number" ? Number(e.target.value) : e.target.value
+                      )
                     }
                     placeholder={field.placeholder}
                     required={field.required}
