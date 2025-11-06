@@ -1,4 +1,4 @@
-import Header from "@/app/components/Header";
+import Header from "@/components/Header";
 import { mqMin } from "@/styles/breakpoints";
 import { css } from "@linaria/core";
 
@@ -15,7 +15,7 @@ export default function Stats() {
   return (
    <div className={containerStyles}>
       <Header 
-        heading="Summary Statistics" 
+        heading="Orders" 
       />
     </div>
   );

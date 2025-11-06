@@ -62,8 +62,8 @@ type SidebarNavItem = {
 const sidebarNavItems: SidebarNavItem[] = [
   { href: "/admin/categories", label: "Categories", icon: MdCategory },
   { href: "/admin/allergens", label: "Allergens", icon: FaAllergies },
-  { href: "/admin/products", label: "Products", icon: MdOutlineMenuBook},
-  { href: "/admin/stats", label: "Stats", icon: IoIosStats }
+  { href: "/admin/menu", label: "Menu", icon: MdOutlineMenuBook},
+  { href: "/admin/orders", label:"Orders", icon: IoIosStats }
 ];
 
 const Sidebar = (): ReactElement => {

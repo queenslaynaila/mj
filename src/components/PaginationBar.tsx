@@ -1,6 +1,6 @@
 import React from "react";
 import { css, cx } from "@linaria/atomic";
-import { TablePaginationConfig } from "@/styles/table.types";
+import { TablePaginationConfig } from "@/types/table.types";
 
 const paginationContainerStyles = css`
   display: flex;

@@ -1,6 +1,7 @@
-import Header from "@/app/components/Header";
-import ProductManagement from "@/app/components/ProductManagement";
-import { ALLERGENS, CATEGORIES, PRODUCTS } from "@/data/mock-data";
+"use client";
+
+import Header from "@/components/Header";
+import ProductManagement from "@/components/ProductManagement";
 import { mqMin } from "@/styles/breakpoints";
 import { css } from "@linaria/core";
 
@@ -17,10 +18,10 @@ export default function Products() {
   return (
    <div className={containerStyles}>
       <Header 
-        heading="Products" 
+        heading="Menu Items" 
         description="Manage and track menu items." 
       />
-      <ProductManagement initialProducts={PRODUCTS} initialCategories={ CATEGORIES} allergens={ALLERGENS} />
+      <ProductManagement/>
     </div>
   );
 }

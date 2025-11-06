@@ -4,7 +4,7 @@ import {
   FlexBetweenCenterStyles, 
   FlexCenterStyles,
   FlexColumnStyles
-} from "../../styles/commonStyles"
+} from "../styles/commonStyles"
 
 const dashBoardHeaderStyles = css`
   flex-wrap: wrap;

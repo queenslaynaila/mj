@@ -1,6 +1,6 @@
 import React from "react";
 import { css } from "@linaria/atomic";
-import { TableFilterConfig } from "@/styles/table.types";
+import { TableFilterConfig } from "@/types/table.types";
 
 
 const filtersContainerStyles = css`

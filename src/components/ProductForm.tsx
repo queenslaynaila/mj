@@ -1,14 +1,17 @@
 "use client"
-
+ 
+import { Allergen } from "@/types/allergens.types"
+import { Category } from "@/types/categories.types"
+import { CustomOption, MenuItem, Variant } from "@/types/menu.types"
 import { css } from "@linaria/atomic"
 import { useState, useEffect } from "react"
 import { MdAdd, MdDelete, MdUpload, MdImage } from "react-icons/md"
 
 interface ProductFormProps {
-  categories: Array<{ id: number; name: string }>
-  allergens: Array<{ id: number; name: string }>
-  onSubmit: (product: any) => void
-  editingProduct?: any | null
+  categories: Category[],
+  allergens: Allergen[],
+  onSubmit: (product: MenuItem) => void
+  editingProduct?: MenuItem | null
   onCancel?: () => void
 }
 
@@ -143,25 +146,6 @@ const selectStyles = css`
 const groupStyles = css`
   display: flex;
   gap: 16px;
-`
-
-const groupGrowStyles = css`
-  display: flex;
-  gap: 16px;
-  flex: 1;
-`
-
-const buttonStyles = css`
-  padding: 10px 20px;
-  font-size: 14px;
-  font-weight: 500;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
 `
 
 const buttonPrimaryStyles = css`
@@ -566,22 +550,17 @@ export default function ProductMultiStepForm({
   onCancel,
 }: ProductFormProps) {
   const [currentStep, setCurrentStep] = useState(0)
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<Omit<MenuItem,'createdAt'|'updatedAt'>>({
     id: "",
     name: "",
-    category_id: "",
+    categoryId: "",
     description: "",
     price: 0,
     currency: "EUR",
     image: "",
     allergens: [] as string[],
-    variants: [] as Array<{ label: string; price: number }>,
-    custom_options: [] as Array<{
-      type: string
-      label: string
-      required: boolean
-      options: Array<{ id: string; label: string; price_delta?: number }>
-    }>,
+    variants: [] as Variant[],
+    customOptions: [] as CustomOption[],
     notes: "",
   })
 
@@ -593,20 +572,20 @@ export default function ProductMultiStepForm({
   useEffect(() => {
     if (editingProduct) {
       const allergenStrings = Array.isArray(editingProduct.allergens)
-        ? editingProduct.allergens.map((a: any) => String(a))
+        ? editingProduct.allergens.map((a: Allergen) => String(a))
         : []
 
       setFormData({
         id: editingProduct.id,
         name: editingProduct.name,
-        category_id: String(editingProduct.category_id),
+        categoryId: String(editingProduct.categoryId),
         description: editingProduct.description,
         price: editingProduct.price,
         currency: editingProduct.currency || "EUR",
         image: editingProduct.image || "",
         allergens: allergenStrings,
         variants: editingProduct.variants || [],
-        custom_options: editingProduct.custom_options || [],
+        customOptions: editingProduct.customOptions || [],
         notes: editingProduct.notes || "",
       })
     }
@@ -672,8 +651,8 @@ export default function ProductMultiStepForm({
   const addCustomOption = () => {
     setFormData((prev) => ({
       ...prev,
-      custom_options: [
-        ...prev.custom_options,
+      customOptions: [
+        ...prev.customOptions,
         { type: "", label: "", required: false, options: [{ id: "", label: "" }] },
       ],
     }))
@@ -682,21 +661,21 @@ export default function ProductMultiStepForm({
   const updateCustomOption = (index: number, field: string, value: any) => {
     setFormData((prev) => ({
       ...prev,
-      custom_options: prev.custom_options.map((opt, i) => (i === index ? { ...opt, [field]: value } : opt)),
+      customOptions: prev.customOptions.map((opt, i) => (i === index ? { ...opt, [field]: value } : opt)),
     }))
   }
 
   const removeCustomOption = (index: number) => {
     setFormData((prev) => ({
       ...prev,
-      custom_options: prev.custom_options.filter((_, i) => i !== index),
+      customOptions: prev.customOptions.filter((_, i) => i !== index),
     }))
   }
 
   const addOptionChoice = (optionIndex: number) => {
     setFormData((prev) => ({
       ...prev,
-      custom_options: prev.custom_options.map((opt, i) =>
+      customOptions: prev.customOptions.map((opt, i) =>
         i === optionIndex ? { ...opt, options: [...opt.options, { id: "", label: "" }] } : opt,
       ),
     }))
@@ -705,7 +684,7 @@ export default function ProductMultiStepForm({
   const updateOptionChoice = (optionIndex: number, choiceIndex: number, field: string, value: any) => {
     setFormData((prev) => ({
       ...prev,
-      custom_options: prev.custom_options.map((opt, i) =>
+      customOptions: prev.customOptions.map((opt, i) =>
         i === optionIndex
           ? {
               ...opt,
@@ -719,7 +698,7 @@ export default function ProductMultiStepForm({
   const removeOptionChoice = (optionIndex: number, choiceIndex: number) => {
     setFormData((prev) => ({
       ...prev,
-      custom_options: prev.custom_options.map((opt, i) =>
+      customOptions: prev.customOptions.map((opt, i) =>
         i === optionIndex ? { ...opt, options: opt.options.filter((_, j) => j !== choiceIndex) } : opt,
       ),
     }))
@@ -733,7 +712,7 @@ export default function ProductMultiStepForm({
     const productData = {
       ...formData,
       allergens: formData.allergens.map((a) => Number(a)),
-      category_id: Number(formData.category_id),
+      categoryId: Number(formData.categoryId),
     }
 
     onSubmit(productData)
@@ -749,7 +728,7 @@ export default function ProductMultiStepForm({
       return (
         formData.name.trim() !== "" &&
         formData.description.trim() !== "" &&
-        formData.category_id !== "" &&
+        formData.categoryId !== "" &&
         formData.price > 0
       )
     }
@@ -831,8 +810,8 @@ export default function ProductMultiStepForm({
               Category <span className={requiredStyles}>*</span>
             </label>
             <select
-              value={formData.category_id}
-              onChange={(e) => handleChange("category_id", e.target.value)}
+              value={formData.categoryId}
+              onChange={(e) => handleChange("categoryId", e.target.value)}
               className={selectStyles}
             >
               <option value="">Select category</option>
@@ -1065,7 +1044,7 @@ export default function ProductMultiStepForm({
               </button>
             </div>
 
-            {formData.custom_options.map((option, optIndex) => (
+            {formData.customOptions.map((option, optIndex) => (
               <div
                 key={optIndex}
                 style={{
@@ -1160,7 +1139,7 @@ export default function ProductMultiStepForm({
               </div>
             ))}
 
-            {formData.custom_options.length === 0 && (
+            {formData.customOptions.length === 0 && (
               <div className={emptyStateStyles}>No custom options added. Click "Add Option Group" to create one.</div>
             )}
           </div>

@@ -3,15 +3,15 @@
 
 import { css } from "@linaria/core";
 import { mqMin } from "@/styles/breakpoints";
-import Header from "@/app/components/Header";
-import EmptyStateMessage from "@/app/components/EmptyStateMessage";
-import DataTable from "@/app/components/DataTable";
+import Header from "@/components/Header";
+import EmptyStateMessage from "@/components/EmptyStateMessage";
+import DataTable from "@/components/DataTable";
 import { Category } from "@/types/categories.types";
 import {
   useCategories,
   useCreateCategory,
   useDeleteCategory,
-} from "@/app/hooks/useCategory";
+} from "@/hooks/useCategory";
 import { updateCategory } from "@/app/api/categories.api";
 
 const containerStyles = css`

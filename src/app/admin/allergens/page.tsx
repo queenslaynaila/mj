@@ -1,12 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import Header from "@/app/components/Header";
+import Header from "@/components/Header";
 import { mqMin } from "@/styles/breakpoints";
 import { Allergen } from "@/types";
 import { css } from "@linaria/core";
-import { ALLERGENS } from "@/data/mock-data";
-import DataTable from "@/app/components/DataTable";
+import { ALLERGENS } from "@/types/mock-allergens";
+import DataTable from "@/components/DataTable";
 
 const containerStyles = css`
   padding: 24px;

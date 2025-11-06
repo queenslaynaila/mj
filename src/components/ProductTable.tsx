@@ -5,7 +5,8 @@ import { useState, useMemo } from "react"
 import { MdDelete, MdEdit, MdSearch, MdFilterList } from "react-icons/md"
 import AllergenFilter from "./AllergenFilter"
 import CategoryFilter from "./CategoryFilter"
-import { Product } from "@/types"
+import { MenuItem } from "@/types/menu.types"
+ 
  
 interface Category {
   id: string
@@ -442,11 +443,11 @@ export default function ProductTable({
   onDelete,
   onEdit,
 }: {
-  products: Product[]
+  products: MenuItem[]
   categories: Category[]
   allergens: Allergen[]
   onDelete: (id: string) => void
-  onEdit: (product: Product) => void
+  onEdit: (product: MenuItem) => void
 }) {
   const [deleteId, setDeleteId] = useState<string | null>(null)
   const [isOpen, setIsOpen] = useState(false)
@@ -457,7 +458,7 @@ export default function ProductTable({
   const [allergenFilter, setAllergenFilter] = useState<string[]>([])
   const [missingImage, setMissingImage] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
-  const itemsPerPage = 5
+  const itemsPerPage = 10
 
   const filteredProducts = useMemo(() => {
     return products.filter((product) => {
@@ -465,7 +466,7 @@ export default function ProductTable({
         return false
       }
 
-      if (categoryFilter && String(product.category_id) !== categoryFilter) {
+      if (categoryFilter && String(product.categoryId) !== categoryFilter) {
         return false
       }
 
@@ -495,7 +496,7 @@ export default function ProductTable({
     }
   }
 
-  const getCategoryName = (categoryId: number) => {
+  const getCategoryName = (categoryId:string) => {
     const category = categories.find((cat) => String(cat.id) === String(categoryId))
     return category ? category.name : "Unknown"
   }
@@ -506,6 +507,7 @@ export default function ProductTable({
         {product.image ? (
           <div className={imageContainerStyles}>
             <img src={product.image || "/placeholder.svg"} alt={product.name} className={imageStyles} />
+             
           </div>
         ) : (
           <div className={noImageStyles}>
@@ -517,7 +519,7 @@ export default function ProductTable({
         <p className={productNameStyles}>{product.name}</p>
       </td>
       <td className={tdStyles}>
-        <span className={badgeStyles}>{getCategoryName(product.category_id)}</span>
+        <span className={badgeStyles}>{getCategoryName(product.categoryId)}</span>
       </td>
       <td className={tdStyles}>
         <p className={priceStyles}>€{product.price.toFixed(2)}</p>

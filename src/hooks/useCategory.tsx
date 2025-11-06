@@ -1,19 +1,19 @@
 import { 
-    CategoriesResponse, 
-    Category, 
-    CreateCategoryRequest 
+  CategoriesResponse, 
+  Category, 
+  CreateCategoryRequest 
 } from "@/types/categories.types";
 import { 
-    useQuery, 
-    useMutation, 
-    useQueryClient
+  useQuery, 
+  useMutation, 
+  useQueryClient
  } from "@tanstack/react-query";
 import { 
-    createOrUpdateCategory, 
-    deleteCategory, 
-    fetchCategories,
-     updateCategory 
-} from "../api/categories.api";
+  createOrUpdateCategory, 
+  deleteCategory, 
+  fetchCategories,
+  updateCategory 
+} from "../app/api/categories.api";
 
 export function useCategories() {
   return useQuery<CategoriesResponse>({

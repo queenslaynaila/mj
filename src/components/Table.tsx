@@ -1,6 +1,6 @@
 import { css, cx } from "@linaria/atomic"
 import { type ReactNode } from "react"
-import { TableFilterConfig, TablePaginationConfig } from "@/styles/table.types";
+import { TableFilterConfig, TablePaginationConfig } from "@/types/table.types";
 import PaginationBar from "./PaginationBar";
 import FilterBar from "./FilterBar";
 

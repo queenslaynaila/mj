@@ -53,3 +53,7 @@ export async function DELETE(req: Request, context: { params: Promise<{ path: st
   const { path } = await context.params;
   return handleRequest(req, "DELETE", { path });
 }
+
+export async function PUT(req: Request, { params }: { params: { path: string[] } }) {
+  return handleRequest(req, "PUT", params);
+}

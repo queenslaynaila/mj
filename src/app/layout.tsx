@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { ReactQueryProvider } from "./hooks/queryprovide";
-import "./globals.css";
+import { ReactQueryProvider } from "./queryprovider";
+import "../styles/globals.css";
 
 export const metadata: Metadata = {
   title: "MJ Admin",
