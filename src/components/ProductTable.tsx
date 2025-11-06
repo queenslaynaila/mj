@@ -6,18 +6,9 @@ import { MdDelete, MdEdit, MdSearch, MdFilterList } from "react-icons/md"
 import AllergenFilter from "./AllergenFilter"
 import CategoryFilter from "./CategoryFilter"
 import { MenuItem } from "@/types/menu.types"
+import { Category } from "@/types/categories.types"
+import { Allergen } from "@/types/allergens.types"
  
- 
-interface Category {
-  id: string
-  name: string
-}
-
-interface Allergen {
-  id: number
-  name: string
-}
-
 const paperStyles = css`
   background: white;
   border-radius: 12px;
@@ -80,11 +71,6 @@ const searchIconStyles = css`
   transform: translateY(-50%);
   color: #666;
   pointer-events: none;
-`
-
-const groupStyles = css`
-  display: flex;
-  gap: 16px;
 `
 
 const groupGrowStyles = css`

@@ -4,15 +4,14 @@
 import { css } from "@linaria/core";
 import { mqMin } from "@/styles/breakpoints";
 import Header from "@/components/Header";
-import EmptyStateMessage from "@/components/EmptyStateMessage";
 import DataTable from "@/components/DataTable";
 import { Category } from "@/types/categories.types";
 import {
   useCategories,
   useCreateCategory,
   useDeleteCategory,
+  useUpdateCategory,
 } from "@/hooks/useCategory";
-import { updateCategory } from "@/app/api/categories.api";
 
 const containerStyles = css`
   padding: 24px;
@@ -61,6 +60,7 @@ export default function CategoriesPage() {
   } = useCategories();
   const createCategory = useCreateCategory();
   const deleteCategory = useDeleteCategory();
+  const updateCategory = useUpdateCategory();
 
   const handleCreate = (
     newCategory: Omit<Category, "id" | "createdAt" | "updatedAt">
@@ -78,7 +78,7 @@ export default function CategoriesPage() {
   };
 
   const handleEdit = (category: Category) => {
-    updateCategory(category.id, category);
+    updateCategory.mutate({ id: category.id, payload: category });
   };
 
   if (isLoading) return <p>Loading...</p>;
@@ -91,13 +91,6 @@ export default function CategoriesPage() {
         description="Manage and track available menu categories."
       />
 
-      {categories.items.length === 0 && (
-        <EmptyStateMessage
-          title="No Categories"
-          message="There are currently no categories configured."
-        />
-      )}
-
       {
         <DataTable
           data={categories.items}
@@ -105,7 +98,7 @@ export default function CategoriesPage() {
           searchable={true}
           onDelete={handleDelete}
           onEdit={handleEdit}
-          onCreate={handleCreate}
+          onCreate={handleCreate as (item: Partial<Category>) => void}
           searchKeys={["name"]}
           formFields={formFields}
           searchPlaceholder="Search categories by name."

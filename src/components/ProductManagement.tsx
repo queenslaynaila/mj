@@ -3,7 +3,7 @@
 import { css } from "@linaria/atomic"
 import { useState } from "react"
 import ProductTable from "./ProductTable"
-import ProductMultiStepForm from "./ProductForm"
+import ProductMultiStepForm from "./MultiStepForm"
 import { ALLERGENS } from "@/types/mock-allergens"
 import { useCategories } from "../hooks/useCategory"
 import { useCreateMenuItem, useDeleteMenuItem, useMenuItems, useUpdateMenuItem } from "../hooks/useMenu"
@@ -87,6 +87,7 @@ export default function ProductManagement() {
   };
 
   const handleUpdateProduct = (updatedMenu: MenuItem) => {
+    console.log("Updating menu item:", updatedMenu);
     updateMenuItem.mutate(
       { id: updatedMenu.id, data: updatedMenu },
       {

@@ -90,11 +90,11 @@ const tableStyles = css`
 `
 
 const tableHeadStyles = css`
-  background-color: #1a1a1a;
+  background-color: lightgray;
 `
 
 const tableHeadCellStyles = css`
-  color: #f5f5f5;
+  color:black;
   font-weight: 600;
   font-size: 14px;
   padding: 12px 16px;
@@ -395,33 +395,49 @@ const selectStyles = css`
 
 interface DataItem {
   id: string | number
-  [key: string]: any
 }
 
-interface Column<T> {
+interface Column<T extends DataItem> {
   key: string
   label: string
   render: (item: T) => React.ReactNode
 }
 
-interface FormField {
+interface BaseFormField {
   key: string
   label: string
-  type: "text" | "email" | "number" | "textarea" | "select" | "date"
   placeholder?: string
   required?: boolean
-  options?: { value: string; label: string }[]
 }
+
+interface TextFormField extends BaseFormField {
+  type: "text" | "email" | "date"
+}
+
+interface NumberFormField extends BaseFormField {
+  type: "number"
+}
+
+interface TextareaFormField extends BaseFormField {
+  type: "textarea"
+}
+
+interface SelectFormField extends BaseFormField {
+  type: "select"
+  options: { value: string; label: string }[]
+}
+
+type FormField = TextFormField | NumberFormField | TextareaFormField | SelectFormField
 
 interface DataTableProps<T extends DataItem> {
   data: T[]
   columns: Column<T>[]
   onDelete?: (id: string | number) => void
   onEdit?: (item: T) => void
-  onCreate?: (item: Omit<T, "id">) => void
-  formFields?: FormField[]
+  onCreate?: (item: Partial<T>) => void
+  formFields?: readonly FormField[]
   searchable?: boolean
-  searchKeys?: (keyof T)[]
+  searchKeys?: readonly (keyof T)[]
   searchPlaceholder?: string
   paginated?: boolean
   itemsPerPage?: number
@@ -455,7 +471,7 @@ export default function DataTable<T extends DataItem>({
   const [isFormModalOpen, setIsFormModalOpen] = useState(false)
   const [formMode, setFormMode] = useState<"create" | "edit">("create")
   const [editingItem, setEditingItem] = useState<T | null>(null)
-  const [formData, setFormData] = useState<Record<string, any>>({})
+  const [formData, setFormData] = useState<Record<string, string | number>>({})
   const [searchQuery, setSearchQuery] = useState("")
   const [currentPage, setCurrentPage] = useState(1)
 
@@ -477,14 +493,14 @@ export default function DataTable<T extends DataItem>({
   const openEditForm = (item: T) => {
     setFormMode("edit")
     setEditingItem(item)
-    setFormData({ ...item })
+    setFormData({ ...(item as unknown as Record<string, string | number>) })
     setIsFormModalOpen(true)
   }
 
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     if (formMode === "create" && onCreate) {
-      onCreate(formData as Omit<T, "id">)
+      onCreate(formData as Partial<T>)
     } else if (formMode === "edit" && onEdit && editingItem) {
       onEdit({ ...formData, id: editingItem.id } as T)
     }
@@ -493,7 +509,7 @@ export default function DataTable<T extends DataItem>({
     setEditingItem(null)
   }
 
-  const handleInputChange = (key: string, value: any) => {
+  const handleInputChange = (key: string, value: string | number) => {
     setFormData((prev) => ({ ...prev, [key]: value }))
   }
 

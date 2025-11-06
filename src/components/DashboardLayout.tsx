@@ -132,7 +132,6 @@ type LayoutProps = {
 const DashboardLayout: React.FC<LayoutProps> = ({ children }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const userName = "USER";
 
   const handleSignOut = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -154,11 +153,11 @@ const DashboardLayout: React.FC<LayoutProps> = ({ children }) => {
           >
             <IoMenuOutline size={24} />
           </button>
-          <h2 className={headerTitleStyles}>Admin Dashboard</h2>
+          <h2 className={headerTitleStyles}>M.J. O&apos;Connor&apos;s</h2>
         </div>
         <div className={avatarContainerStyles}>
           <button className={avatarStyles} onClick={handleToggleDropdown}>
-            {(userName || "").slice(0, 2).toUpperCase()}
+            {("MJC").slice(0, 2).toUpperCase()}
           </button>
           {isDropdownOpen && (
             <div className={dropdownMenuStyles}>

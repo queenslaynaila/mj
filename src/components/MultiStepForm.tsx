@@ -1,15 +1,15 @@
 "use client"
- 
-import { Allergen } from "@/types/allergens.types"
-import { Category } from "@/types/categories.types"
-import { CustomOption, MenuItem, Variant } from "@/types/menu.types"
+
+import type { Allergen } from "@/types/allergens.types"
+import type { Category } from "@/types/categories.types"
+import type { CustomOption, MenuItem, Variant } from "@/types/menu.types"
 import { css } from "@linaria/atomic"
 import { useState, useEffect } from "react"
-import { MdAdd, MdDelete, MdUpload, MdImage } from "react-icons/md"
+import { MdAdd, MdDelete, MdUpload, MdImage, MdExpandMore, MdExpandLess } from "react-icons/md"
 
 interface ProductFormProps {
-  categories: Category[],
-  allergens: Allergen[],
+  categories: Category[]
+  allergens: Allergen[]
   onSubmit: (product: MenuItem) => void
   editingProduct?: MenuItem | null
   onCancel?: () => void
@@ -308,11 +308,201 @@ const variantCardStyles = css`
   background-color: #fafafa;
 `
 
-const emptyStateStyles = css`
+const variantTableStyles = css`
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #e5e5e5;
+  border-radius: 6px;
+  overflow: hidden;
+`
+
+const variantTableHeaderStyles = css`
+  background-color: #f5f5f5;
+  font-weight: 600;
   font-size: 14px;
-  color: #9ca3af;
-  text-align: center;
-  padding: 24px;
+  text-align: left;
+  padding: 12px;
+  border-bottom: 1px solid #e5e5e5;
+`
+
+const variantTableCellStyles = css`
+  padding: 12px;
+  border-bottom: 1px solid #f0f0f0;
+  vertical-align: middle;
+`
+
+const variantTableRowStyles = css`
+  &:last-child td {
+    border-bottom: none;
+  }
+
+  &:hover {
+    background-color: #fafafa;
+  }
+`
+
+const variantInputTableStyles = css`
+  width: 100%;
+  padding: 8px 10px;
+  font-size: 14px;
+  border: 1px solid #e5e5e5;
+  border-radius: 4px;
+  background-color: #ffffff;
+  outline: none;
+  transition: border-color 0.2s ease-in-out;
+
+  &:focus {
+    border-color: #1a1a1a;
+  }
+`
+
+const customOptionGroupStyles = css`
+  border: 2px solid #1a1a1a;
+  border-radius: 8px;
+  padding: 0;
+  background-color: #ffffff;
+  overflow: hidden;
+`
+
+const customOptionHeaderStyles = css`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  background-color: #1a1a1a;
+  color: #ffffff;
+`
+
+const customOptionTitleContainerStyles = css`
+  display: flex;
+  align-items: center;
+  gap: 12px;
+`
+
+const customOptionTitleStyles = css`
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0;
+`
+
+const customOptionBadgeStyles = css`
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  background-color: #ef4444;
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+`
+
+const customOptionBodyStyles = css`
+  padding: 20px;
+  background-color: #fafafa;
+`
+
+const customOptionMetaStyles = css`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px;
+  background-color: #ffffff;
+  border: 1px solid #e5e5e5;
+  border-radius: 6px;
+  margin-bottom: 20px;
+`
+
+const choicesSectionStyles = css`
+  background-color: #ffffff;
+  border: 1px solid #e5e5e5;
+  border-radius: 6px;
+  padding: 16px;
+`
+
+const choicesSectionHeaderStyles = css`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #e5e5e5;
+`
+
+const choicesSectionTitleStyles = css`
+  font-size: 14px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin: 0;
+`
+
+const choiceTableStyles = css`
+  width: 100%;
+  border-collapse: collapse;
+`
+
+const choiceTableHeaderStyles = css`
+  background-color: #f5f5f5;
+  font-weight: 600;
+  font-size: 13px;
+  text-align: left;
+  padding: 10px 12px;
+  border-bottom: 1px solid #e5e5e5;
+`
+
+const choiceTableCellStyles = css`
+  padding: 10px 12px;
+  border-bottom: 1px solid #f0f0f0;
+  vertical-align: middle;
+`
+
+const choiceTableRowStyles = css`
+  &:last-child td {
+    border-bottom: none;
+  }
+
+  &:hover {
+    background-color: #fafafa;
+  }
+`
+
+const choiceInputTableStyles = css`
+  width: 100%;
+  padding: 8px 10px;
+  font-size: 14px;
+  border: 1px solid #e5e5e5;
+  border-radius: 4px;
+  background-color: #ffffff;
+  outline: none;
+  transition: border-color 0.2s ease-in-out;
+
+  &:focus {
+    border-color: #1a1a1a;
+  }
+`
+
+const priceDeltaHelpTextStyles = css`
+  font-size: 11px;
+  color: #666666;
+  margin-top: 4px;
+`
+
+const iconButtonWhiteStyles = css`
+  padding: 6px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: transparent;
+  color: #ffffff;
+  transition: all 0.2s ease-in-out;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
 `
 
 const dividerStyles = css`
@@ -542,6 +732,151 @@ const multiSelectOptionActiveStyles = css`
   }
 `
 
+const emptyStateStyles = css`
+  color: #666666;
+  text-align: center;
+  margin-top: 16px;
+`
+
+const customOptionAccordionStyles = css`
+  border: 1px solid #e5e5e5;
+  border-radius: 6px;
+  background-color: #ffffff;
+  overflow: hidden;
+  transition: all 0.2s ease-in-out;
+
+  &:hover {
+    border-color: #d1d5db;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  }
+`
+
+const customOptionAccordionHeaderStyles = css`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 18px;
+  background-color: #fafafa;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+  border-bottom: 1px solid #e5e5e5;
+
+  &:hover {
+    background-color: #f5f5f5;
+  }
+`
+
+const customOptionAccordionHeaderExpandedStyles = css`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 18px;
+  background-color: #1a1a1a;
+  color: #ffffff;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+  border-bottom: 1px solid #1a1a1a;
+
+  &:hover {
+    background-color: #2d2d2d;
+  }
+`
+
+const customOptionSummaryStyles = css`
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+`
+
+const customOptionLabelTextStyles = css`
+  font-size: 15px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin: 0;
+`
+
+const customOptionLabelTextExpandedStyles = css`
+  font-size: 15px;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0;
+`
+
+const customOptionMetaTextStyles = css`
+  font-size: 13px;
+  color: #666666;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+`
+
+const customOptionMetaTextExpandedStyles = css`
+  font-size: 13px;
+  color: #d1d5db;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+`
+
+const customOptionBadgeSmallStyles = css`
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  background-color: #ef4444;
+  color: #ffffff;
+  font-size: 10px;
+  font-weight: 600;
+  border-radius: 3px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+`
+
+const customOptionActionsStyles = css`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+`
+
+const iconButtonAccordionStyles = css`
+  padding: 6px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: transparent;
+  color: #1a1a1a;
+  transition: all 0.2s ease-in-out;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    background-color: #e5e5e5;
+  }
+`
+
+const iconButtonAccordionExpandedStyles = css`
+  padding: 6px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: transparent;
+  color: #ffffff;
+  transition: all 0.2s ease-in-out;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+`
+
+const customOptionContentStyles = css`
+  padding: 20px;
+  background-color: #fafafa;
+`
+
 export default function ProductMultiStepForm({
   categories,
   allergens,
@@ -550,7 +885,7 @@ export default function ProductMultiStepForm({
   onCancel,
 }: ProductFormProps) {
   const [currentStep, setCurrentStep] = useState(0)
-  const [formData, setFormData] = useState<Omit<MenuItem,'createdAt'|'updatedAt'>>({
+  const [formData, setFormData] = useState<Omit<MenuItem, "createdAt" | "updatedAt">>({
     id: "",
     name: "",
     categoryId: "",
@@ -568,6 +903,7 @@ export default function ProductMultiStepForm({
   const [uploadingImage, setUploadingImage] = useState(false)
   const [imageInputMode, setImageInputMode] = useState<"upload" | "url">("upload")
   const [allergenDropdownOpen, setAllergenDropdownOpen] = useState(false)
+  const [expandedOptions, setExpandedOptions] = useState<Set<number>>(new Set())
 
   useEffect(() => {
     if (editingProduct) {
@@ -630,14 +966,27 @@ export default function ProductMultiStepForm({
   const addVariant = () => {
     setFormData((prev) => ({
       ...prev,
-      variants: [...prev.variants, { label: "", price: 0 }],
+      variants: [...prev.variants, { id: "", label: "", price: 0 }],
     }))
   }
 
   const updateVariant = (index: number, field: string, value: any) => {
     setFormData((prev) => ({
       ...prev,
-      variants: prev.variants.map((v, i) => (i === index ? { ...v, [field]: value } : v)),
+      variants: prev.variants.map((v, i) => {
+        if (i === index) {
+          if (field === "label") {
+            // Derive id from label
+            const derivedId = value
+              .toLowerCase()
+              .replace(/[^a-z0-9]+/g, "-")
+              .replace(/^-+|-+$/g, "")
+            return { ...v, label: value, id: derivedId }
+          }
+          return { ...v, [field]: value }
+        }
+        return v
+      }),
     }))
   }
 
@@ -661,7 +1010,20 @@ export default function ProductMultiStepForm({
   const updateCustomOption = (index: number, field: string, value: any) => {
     setFormData((prev) => ({
       ...prev,
-      customOptions: prev.customOptions.map((opt, i) => (i === index ? { ...opt, [field]: value } : opt)),
+      customOptions: prev.customOptions.map((opt, i) => {
+        if (i === index) {
+          if (field === "label") {
+            // Derive type from label: lowercase and hyphenate
+            const derivedType = value
+              .toLowerCase()
+              .replace(/[^a-z0-9]+/g, "-")
+              .replace(/^-+|-+$/g, "")
+            return { ...opt, label: value, type: derivedType }
+          }
+          return { ...opt, [field]: value }
+        }
+        return opt
+      }),
     }))
   }
 
@@ -688,7 +1050,20 @@ export default function ProductMultiStepForm({
         i === optionIndex
           ? {
               ...opt,
-              options: opt.options.map((choice, j) => (j === choiceIndex ? { ...choice, [field]: value } : choice)),
+              options: opt.options.map((choice, j) => {
+                if (j === choiceIndex) {
+                  if (field === "label") {
+                    // Derive id from label
+                    const derivedId = value
+                      .toLowerCase()
+                      .replace(/[^a-z0-9]+/g, "-")
+                      .replace(/^-+|-+$/g, "")
+                    return { ...choice, label: value, id: derivedId }
+                  }
+                  return { ...choice, [field]: value }
+                }
+                return choice
+              }),
             }
           : opt,
       ),
@@ -711,10 +1086,11 @@ export default function ProductMultiStepForm({
 
     const productData = {
       ...formData,
-      allergens: formData.allergens.map((a) => Number(a)),
-      categoryId: Number(formData.categoryId),
+      allergens: formData.allergens, // Keep as string array
+      categoryId: formData.categoryId, // Keep as string
     }
 
+    console.log("[v0] Submitting product data:", productData)
     onSubmit(productData)
   }
 
@@ -747,6 +1123,18 @@ export default function ProductMultiStepForm({
         ? prev.allergens.filter((a) => a !== value)
         : [...prev.allergens, value],
     }))
+  }
+
+  const toggleOptionExpansion = (index: number) => {
+    setExpandedOptions((prev) => {
+      const newSet = new Set(prev)
+      if (newSet.has(index)) {
+        newSet.delete(index)
+      } else {
+        newSet.add(index)
+      }
+      return newSet
+    })
   }
 
   return (
@@ -977,7 +1365,7 @@ export default function ProductMultiStepForm({
       {/* Step 3: Optional Details */}
       {currentStep === 2 && (
         <div className={stackStyles}>
-          <h4 className={titleStyles}>Optional Product Details</h4>
+          <h4 className={titleStyles}>Custom Options</h4>
 
           {/* Variants Section */}
           <div className={stackStyles}>
@@ -989,52 +1377,60 @@ export default function ProductMultiStepForm({
               </button>
             </div>
 
-            {formData.variants.map((variant, index) => (
-              <div key={index} className={variantCardStyles}>
-                <div style={{ display: "flex", gap: "12px", alignItems: "flex-start" }}>
-                  <div className={flexContainerStyles}>
-                    <div>
-                      <label className={labelStyles}>
-                        Variant Label <span className={requiredStyles}>*</span>
-                      </label>
-                      <input
-                        type="text"
-                        placeholder="Label (e.g., With Fries)"
-                        value={variant.label}
-                        onChange={(e) => updateVariant(index, "label", e.target.value)}
-                        className={inputStyles}
-                      />
-                    </div>
-                    <div>
-                      <label className={labelStyles}>
-                        Variant Price <span className={requiredStyles}>*</span>
-                      </label>
-                      <input
-                        type="number"
-                        placeholder="Price"
-                        value={variant.price}
-                        onChange={(e) => updateVariant(index, "price", Number.parseFloat(e.target.value) || 0)}
-                        min={0}
-                        step={0.5}
-                        className={inputStyles}
-                      />
-                    </div>
-                  </div>
-                  <button className={iconButtonStyles} onClick={() => removeVariant(index)}>
-                    <MdDelete size={16} />
-                  </button>
-                </div>
-              </div>
-            ))}
-
-            {formData.variants.length === 0 && (
+            {formData.variants.length > 0 ? (
+              <table className={variantTableStyles}>
+                <thead>
+                  <tr>
+                    <th className={variantTableHeaderStyles} style={{ width: "50%" }}>
+                      Variant Label
+                    </th>
+                    <th className={variantTableHeaderStyles} style={{ width: "35%" }}>
+                      Price
+                    </th>
+                    <th className={variantTableHeaderStyles} style={{ width: "15%", textAlign: "center" }}>
+                      Action
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {formData.variants.map((variant, index) => (
+                    <tr key={index} className={variantTableRowStyles}>
+                      <td className={variantTableCellStyles}>
+                        <input
+                          type="text"
+                          placeholder='e.g., 12", 16", Gluten-free'
+                          value={variant.label}
+                          onChange={(e) => updateVariant(index, "label", e.target.value)}
+                          className={variantInputTableStyles}
+                        />
+                      </td>
+                      <td className={variantTableCellStyles}>
+                        <input
+                          type="number"
+                          placeholder="0.00"
+                          value={variant.price || ""}
+                          onChange={(e) => updateVariant(index, "price", Number.parseFloat(e.target.value) || 0)}
+                          min={0}
+                          step={0.5}
+                          className={variantInputTableStyles}
+                        />
+                      </td>
+                      <td className={variantTableCellStyles} style={{ textAlign: "center" }}>
+                        <button className={iconButtonStyles} onClick={() => removeVariant(index)}>
+                          <MdDelete size={18} />
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            ) : (
               <div className={emptyStateStyles}>No variants added. Click "Add Variant" to create one.</div>
             )}
           </div>
 
           <hr className={dividerStyles} />
 
-          {/* Custom Options Section */}
           <div className={stackStyles}>
             <div className={sectionHeaderStyles}>
               <span className={sectionTitleStyles}>Custom Options (Optional)</span>
@@ -1044,100 +1440,187 @@ export default function ProductMultiStepForm({
               </button>
             </div>
 
-            {formData.customOptions.map((option, optIndex) => (
-              <div
-                key={optIndex}
-                style={{
-                  border: "1px solid #e5e5e5",
-                  borderRadius: "6px",
-                  padding: "16px",
-                  backgroundColor: "#fafafa",
-                }}
-              >
-                <div className={stackStyles}>
-                  <div className={sectionHeaderStyles}>
-                    <span className={sectionTitleStyles}>Option Group {optIndex + 1}</span>
-                    <button className={iconButtonSmallStyles} onClick={() => removeCustomOption(optIndex)}>
-                      <MdDelete size={14} />
-                    </button>
-                  </div>
+            {formData.customOptions.map((option, optIndex) => {
+              const isExpanded = expandedOptions.has(optIndex)
+              const choiceCount = option.options.length
 
-                  <input
-                    type="text"
-                    placeholder="Type (e.g., cooking-style)"
-                    value={option.type}
-                    onChange={(e) => updateCustomOption(optIndex, "type", e.target.value)}
-                    className={inputStyles}
-                  />
-                  <input
-                    type="text"
-                    placeholder="Label (e.g., Cooking Style)"
-                    value={option.label}
-                    onChange={(e) => updateCustomOption(optIndex, "label", e.target.value)}
-                    className={inputStyles}
-                  />
-
-                  <div className={checkboxContainerStyles}>
-                    <input
-                      type="checkbox"
-                      id={`required-${optIndex}`}
-                      checked={option.required}
-                      onChange={(e) => updateCustomOption(optIndex, "required", e.target.checked)}
-                      className={checkboxStyles}
-                    />
-                    <label htmlFor={`required-${optIndex}`} className={checkboxLabelStyles}>
-                      Required
-                    </label>
-                  </div>
-
-                  <div className={dividerWithLabelStyles}>
-                    <div className={dividerLineStyles} />
-                    <span className={dividerLabelStyles}>Choices</span>
-                    <div className={dividerLineStyles} />
-                  </div>
-
-                  {option.options.map((choice, choiceIndex) => (
-                    <div key={choiceIndex} className={flexRowStyles}>
-                      <input
-                        type="text"
-                        placeholder="Choice Label"
-                        value={choice.label}
-                        onChange={(e) => updateOptionChoice(optIndex, choiceIndex, "label", e.target.value)}
-                        className={`${inputStyles} ${flexInputStyles}`}
-                      />
-                      <input
-                        type="number"
-                        placeholder="Price Delta"
-                        value={choice.price_delta || 0}
-                        onChange={(e) =>
-                          updateOptionChoice(
-                            optIndex,
-                            choiceIndex,
-                            "price_delta",
-                            Number.parseFloat(e.target.value) || 0,
-                          )
-                        }
-                        className={`${inputStyles} ${narrowInputStyles}`}
-                      />
-                      <button
-                        className={iconButtonStyles}
-                        onClick={() => removeOptionChoice(optIndex, choiceIndex)}
-                        disabled={option.options.length === 1}
-                      >
-                        <MdDelete size={14} />
-                      </button>
-                    </div>
-                  ))}
-
-                  <button
-                    className={`${buttonLightStyles} ${buttonSmallStyles}`}
-                    onClick={() => addOptionChoice(optIndex)}
+              return (
+                <div key={optIndex} className={customOptionAccordionStyles}>
+                  {/* Accordion Header - Clickable to expand/collapse */}
+                  <div
+                    className={
+                      isExpanded ? customOptionAccordionHeaderExpandedStyles : customOptionAccordionHeaderStyles
+                    }
+                    onClick={() => toggleOptionExpansion(optIndex)}
                   >
-                    Add Choice
-                  </button>
+                    <div className={customOptionSummaryStyles}>
+                      <h5 className={isExpanded ? customOptionLabelTextExpandedStyles : customOptionLabelTextStyles}>
+                        {option.label || `Option Group ${optIndex + 1}`}
+                      </h5>
+                      <div className={isExpanded ? customOptionMetaTextExpandedStyles : customOptionMetaTextStyles}>
+                        {option.type && <span>Type: {option.type}</span>}
+                        <span>•</span>
+                        <span>
+                          {choiceCount} {choiceCount === 1 ? "choice" : "choices"}
+                        </span>
+                        {option.required && (
+                          <>
+                            <span>•</span>
+                            <span className={customOptionBadgeSmallStyles}>Required</span>
+                          </>
+                        )}
+                      </div>
+                    </div>
+
+                    <div className={customOptionActionsStyles}>
+                      <button
+                        className={isExpanded ? iconButtonAccordionExpandedStyles : iconButtonAccordionStyles}
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          removeCustomOption(optIndex)
+                        }}
+                      >
+                        <MdDelete size={18} />
+                      </button>
+                      <div className={isExpanded ? iconButtonAccordionExpandedStyles : iconButtonAccordionStyles}>
+                        {isExpanded ? <MdExpandLess size={20} /> : <MdExpandMore size={20} />}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Accordion Content - Only shown when expanded */}
+                  {isExpanded && (
+                    <div className={customOptionContentStyles}>
+                      {/* Meta Information Section */}
+                      <div className={customOptionMetaStyles}>
+                        <div>
+                          <label className={labelStyles}>Display Label</label>
+                          <input
+                            type="text"
+                            placeholder="e.g., Wing Flavor, Portion Size, Crust Type"
+                            value={option.label}
+                            onChange={(e) => updateCustomOption(optIndex, "label", e.target.value)}
+                            className={inputStyles}
+                          />
+                          <p className={priceDeltaHelpTextStyles}>Customer-facing label shown in the menu</p>
+                        </div>
+
+                        <div>
+                          <label className={labelStyles}>Option Type (Auto-generated)</label>
+                          <input
+                            type="text"
+                            placeholder="Auto-filled from display label"
+                            value={option.type}
+                            readOnly
+                            className={inputStyles}
+                            style={{ backgroundColor: "#f5f5f5", cursor: "not-allowed" }}
+                          />
+                          <p className={priceDeltaHelpTextStyles}>
+                            Automatically generated from display label (lowercase, hyphenated)
+                          </p>
+                        </div>
+
+                        <div className={checkboxContainerStyles}>
+                          <input
+                            type="checkbox"
+                            id={`required-${optIndex}`}
+                            checked={option.required}
+                            onChange={(e) => updateCustomOption(optIndex, "required", e.target.checked)}
+                            className={checkboxStyles}
+                          />
+                          <label htmlFor={`required-${optIndex}`} className={checkboxLabelStyles}>
+                            Customer must select an option from this group
+                          </label>
+                        </div>
+                      </div>
+
+                      {/* Choices Section */}
+                      <div className={choicesSectionStyles}>
+                        <div className={choicesSectionHeaderStyles}>
+                          <h6 className={choicesSectionTitleStyles}>
+                            Available Choices for "{option.label || "this option"}"
+                          </h6>
+                          <button
+                            className={`${buttonLightStyles} ${buttonSmallStyles}`}
+                            onClick={() => addOptionChoice(optIndex)}
+                          >
+                            <MdAdd size={16} />
+                            Add Choice
+                          </button>
+                        </div>
+
+                        {option.options.length > 0 ? (
+                          <table className={choiceTableStyles}>
+                            <thead>
+                              <tr>
+                                <th className={choiceTableHeaderStyles} style={{ width: "50%" }}>
+                                  Choice Label
+                                </th>
+                                <th className={choiceTableHeaderStyles} style={{ width: "35%" }}>
+                                  Price Adjustment
+                                </th>
+                                <th className={choiceTableHeaderStyles} style={{ width: "15%", textAlign: "center" }}>
+                                  Action
+                                </th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {option.options.map((choice, choiceIndex) => (
+                                <tr key={choiceIndex} className={choiceTableRowStyles}>
+                                  <td className={choiceTableCellStyles}>
+                                    <input
+                                      type="text"
+                                      placeholder="e.g., Classic Buffalo, 6 pieces"
+                                      value={choice.label}
+                                      onChange={(e) =>
+                                        updateOptionChoice(optIndex, choiceIndex, "label", e.target.value)
+                                      }
+                                      className={choiceInputTableStyles}
+                                    />
+                                  </td>
+                                  <td className={choiceTableCellStyles}>
+                                    <input
+                                      type="number"
+                                      placeholder="0 (no change)"
+                                      value={choice.priceDelta || ""}
+                                      onChange={(e) =>
+                                        updateOptionChoice(
+                                          optIndex,
+                                          choiceIndex,
+                                          "priceDelta",
+                                          Number.parseFloat(e.target.value) || undefined,
+                                        )
+                                      }
+                                      className={choiceInputTableStyles}
+                                      step={0.5}
+                                    />
+                                    <p className={priceDeltaHelpTextStyles}>
+                                      Use negative for discount (e.g., -4), positive for extra cost (e.g., +1)
+                                    </p>
+                                  </td>
+                                  <td className={choiceTableCellStyles} style={{ textAlign: "center" }}>
+                                    <button
+                                      className={iconButtonStyles}
+                                      onClick={() => removeOptionChoice(optIndex, choiceIndex)}
+                                      disabled={option.options.length === 1}
+                                      style={{ opacity: option.options.length === 1 ? 0.5 : 1 }}
+                                    >
+                                      <MdDelete size={18} />
+                                    </button>
+                                  </td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        ) : (
+                          <div className={emptyStateStyles}>No choices added yet.</div>
+                        )}
+                      </div>
+                    </div>
+                  )}
                 </div>
-              </div>
-            ))}
+              )
+            })}
 
             {formData.customOptions.length === 0 && (
               <div className={emptyStateStyles}>No custom options added. Click "Add Option Group" to create one.</div>

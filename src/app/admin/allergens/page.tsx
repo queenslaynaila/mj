@@ -3,10 +3,10 @@
 import { useState } from "react";
 import Header from "@/components/Header";
 import { mqMin } from "@/styles/breakpoints";
-import { Allergen } from "@/types";
 import { css } from "@linaria/core";
 import { ALLERGENS } from "@/types/mock-allergens";
 import DataTable from "@/components/DataTable";
+import { Allergen } from "@/types/allergens.types";
 
 const containerStyles = css`
   padding: 24px;
@@ -60,7 +60,7 @@ export default function Allergies() {
         searchable={true}
         onDelete={handleDelete}
         onEdit={handleEdit}
-        onCreate={handleCreate}
+        onCreate={handleCreate as (item: Partial<Allergen>) => void}
         searchKeys={["name"]}
         formFields={formFields}
         searchPlaceholder="Search categories by name."

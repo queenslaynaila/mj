@@ -1,13 +1,13 @@
 "use client"
 
 import type React from "react"
-
 import { css } from "@linaria/atomic"
 import { useState, useRef, useEffect } from "react"
 import { MdClose, MdExpandMore } from "react-icons/md"
+import { Allergen } from "@/types/allergens.types"
 
 interface AllergenFilterProps {
-  allergens: { id: number; name: string }[]
+  allergens:Allergen[],
   value: string[]
   onChange: (value: string[]) => void
 }

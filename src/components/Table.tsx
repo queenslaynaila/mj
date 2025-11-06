@@ -57,7 +57,7 @@ const borderlessStyle = css`
 `;
 
 
-export type TableColumnConfig<T> = {
+type TableColumnConfig<T> = {
   key: string
   header: string
   render: (item: T) => ReactNode

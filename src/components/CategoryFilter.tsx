@@ -1,13 +1,13 @@
 "use client"
 
 import type React from "react"
-
 import { css } from "@linaria/atomic"
 import { useState, useRef, useEffect } from "react"
 import { MdClose, MdExpandMore } from "react-icons/md"
+import { Category } from "@/types/categories.types"
 
 interface CategoryFilterProps {
-  categories: { id: string; name: string }[]
+  categories: Category[],
   value: string | null
   onChange: (value: string | null) => void
 }

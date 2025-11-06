@@ -1,3 +1,4 @@
+import AdminOrdersPage from "@/app/components/order";
 import Header from "@/components/Header";
 import { mqMin } from "@/styles/breakpoints";
 import { css } from "@linaria/core";
@@ -14,9 +15,8 @@ const containerStyles = css`
 export default function Stats() {
   return (
    <div className={containerStyles}>
-      <Header 
-        heading="Orders" 
-      />
+      <Header heading="Orders" description="Track orders"/>
+      <AdminOrdersPage/>
     </div>
   );
 }

@@ -5,17 +5,17 @@ export interface Variant {
   priceDelta?: number; 
 }
 
+interface Option {
+  id: string;
+  label: string;
+  priceDelta?: number;
+}
+
 export interface CustomOption {
   type: string;
   label: string;
   required: boolean;
   options: Option[];
-}
-
-export interface Option {
-  id: string;
-  label: string;
-  priceDelta?: number;
 }
 
 export interface MenuResponse {
