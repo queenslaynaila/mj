@@ -81,7 +81,6 @@ export default function CategoriesPage() {
     updateCategory.mutate({ id: category.id, payload: category });
   };
 
-  
 
   return (
     <div className={containerStyles}>

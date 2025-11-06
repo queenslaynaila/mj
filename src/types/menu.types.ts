@@ -5,10 +5,16 @@ export interface Variant {
   priceDelta?: number; 
 }
 
-interface Option {
+export interface Option {
   id: string;
   label: string;
   priceDelta?: number;
+}
+
+export interface AllergenInfo {
+  id: string;
+  code: number;
+  name: string;
 }
 
 export interface CustomOption {
@@ -31,7 +37,7 @@ export interface MenuItem {
   image: string;
   price: number;
   currency: string;
-  allergens: string[]; 
+  allergens: AllergenInfo[]; 
   variants: Variant[];
   customOptions: CustomOption[];
   createdAt: string;

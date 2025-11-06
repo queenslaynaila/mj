@@ -461,7 +461,10 @@ export default function ProductTable({
 
       if (allergenFilter.length > 0) {
         const productAllergens = product.allergens || []
-        const hasAllAllergens = allergenFilter.every((allergenId) => productAllergens.includes(Number(allergenId)))
+         const hasAllAllergens = allergenFilter.every((allergenId) =>
+             productAllergens.some((a) => a.id === String(allergenId))
+          );
+
         if (!hasAllAllergens) return false
       }
 

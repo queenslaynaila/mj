@@ -2,7 +2,7 @@
 
 import type { Allergen } from "@/types/allergens.types"
 import type { Category } from "@/types/categories.types"
-import type { CustomOption, MenuItem, Variant } from "@/types/menu.types"
+import type { CustomOption, MenuItem, Variant, AllergenInfo, Option } from "@/types/menu.types"
 import { css } from "@linaria/atomic"
 import { useState, useEffect } from "react"
 import { MdAdd, MdDelete, MdUpload, MdImage, MdExpandMore, MdExpandLess } from "react-icons/md"
@@ -10,7 +10,7 @@ import { MdAdd, MdDelete, MdUpload, MdImage, MdExpandMore, MdExpandLess } from "
 interface ProductFormProps {
   categories: Category[]
   allergens: Allergen[]
-  onSubmit: (product: MenuItem) => void
+  onSubmit: (product: Omit<MenuItem, "createdAt" | "updatedAt">) => void
   editingProduct?: MenuItem | null
   onCancel?: () => void
 }
@@ -301,12 +301,6 @@ const sectionTitleStyles = css`
   color: #1a1a1a;
 `
 
-const variantCardStyles = css`
-  border: 1px solid #e5e5e5;
-  border-radius: 6px;
-  padding: 12px;
-  background-color: #fafafa;
-`
 
 const variantTableStyles = css`
   width: 100%;
@@ -354,53 +348,6 @@ const variantInputTableStyles = css`
   &:focus {
     border-color: #1a1a1a;
   }
-`
-
-const customOptionGroupStyles = css`
-  border: 2px solid #1a1a1a;
-  border-radius: 8px;
-  padding: 0;
-  background-color: #ffffff;
-  overflow: hidden;
-`
-
-const customOptionHeaderStyles = css`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 16px 20px;
-  background-color: #1a1a1a;
-  color: #ffffff;
-`
-
-const customOptionTitleContainerStyles = css`
-  display: flex;
-  align-items: center;
-  gap: 12px;
-`
-
-const customOptionTitleStyles = css`
-  font-size: 16px;
-  font-weight: 600;
-  margin: 0;
-`
-
-const customOptionBadgeStyles = css`
-  display: inline-flex;
-  align-items: center;
-  padding: 3px 10px;
-  background-color: #ef4444;
-  color: #ffffff;
-  font-size: 11px;
-  font-weight: 600;
-  border-radius: 4px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-`
-
-const customOptionBodyStyles = css`
-  padding: 20px;
-  background-color: #fafafa;
 `
 
 const customOptionMetaStyles = css`
@@ -488,23 +435,6 @@ const priceDeltaHelpTextStyles = css`
   margin-top: 4px;
 `
 
-const iconButtonWhiteStyles = css`
-  padding: 6px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  background-color: transparent;
-  color: #ffffff;
-  transition: all 0.2s ease-in-out;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
-  &:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-  }
-`
-
 const dividerStyles = css`
   height: 1px;
   background-color: #e5e5e5;
@@ -512,24 +442,6 @@ const dividerStyles = css`
   margin: 24px 0;
 `
 
-const dividerWithLabelStyles = css`
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin: 16px 0;
-`
-
-const dividerLineStyles = css`
-  flex: 1;
-  height: 1px;
-  background-color: #e5e5e5;
-`
-
-const dividerLabelStyles = css`
-  font-size: 13px;
-  color: #666666;
-  font-weight: 500;
-`
 
 const checkboxContainerStyles = css`
   display: flex;
@@ -677,43 +589,6 @@ const removeTagButtonStyles = css`
   cursor: pointer;
   padding: 0;
   font-size: 16px;
-`
-
-const flexContainerStyles = css`
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-`
-
-const flexRowStyles = css`
-  display: flex;
-  gap: 8px;
-`
-
-const flexInputStyles = css`
-  flex: 1;
-`
-
-const narrowInputStyles = css`
-  width: 120px;
-`
-
-const iconButtonSmallStyles = css`
-  padding: 4px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  background-color: transparent;
-  color: #ef4444;
-  transition: all 0.2s ease-in-out;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
-  &:hover {
-    background-color: #fee2e2;
-  }
 `
 
 const multiSelectPlaceholderStyles = css`
@@ -893,7 +768,7 @@ export default function ProductMultiStepForm({
     price: 0,
     currency: "EUR",
     image: "",
-    allergens: [] as string[],
+    allergens: [] as AllergenInfo[],
     variants: [] as Variant[],
     customOptions: [] as CustomOption[],
     notes: "",
@@ -907,10 +782,6 @@ export default function ProductMultiStepForm({
 
   useEffect(() => {
     if (editingProduct) {
-      const allergenStrings = Array.isArray(editingProduct.allergens)
-        ? editingProduct.allergens.map((a: Allergen) => String(a))
-        : []
-
       setFormData({
         id: editingProduct.id,
         name: editingProduct.name,
@@ -919,7 +790,7 @@ export default function ProductMultiStepForm({
         price: editingProduct.price,
         currency: editingProduct.currency || "EUR",
         image: editingProduct.image || "",
-        allergens: allergenStrings,
+        allergens: editingProduct.allergens || [], 
         variants: editingProduct.variants || [],
         customOptions: editingProduct.customOptions || [],
         notes: editingProduct.notes || "",
@@ -930,6 +801,7 @@ export default function ProductMultiStepForm({
   const allergenOptions = allergens.map((allergen) => ({
     value: String(allergen.id),
     label: allergen.name,
+    code: allergen.code,
   }))
 
   const categoryOptions = categories.map((cat) => ({
@@ -937,12 +809,17 @@ export default function ProductMultiStepForm({
     label: cat.name,
   }))
 
-  const handleChange = (field: string, value: any) => {
+  
+   const handleChange = <K extends keyof Omit<MenuItem, "createdAt" | "updatedAt">>(
+    field: K,
+    value: Omit<MenuItem, "createdAt" | "updatedAt">[K],
+  ) => {
     setFormData((prev) => ({
       ...prev,
       [field]: value,
     }))
   }
+
 
   const handleImageUpload = async (file: File | null) => {
     if (!file) {
@@ -970,18 +847,17 @@ export default function ProductMultiStepForm({
     }))
   }
 
-  const updateVariant = (index: number, field: string, value: any) => {
+  const updateVariant = <K extends keyof Variant>(index: number, field: K, value: Variant[K]) => {
     setFormData((prev) => ({
       ...prev,
       variants: prev.variants.map((v, i) => {
         if (i === index) {
           if (field === "label") {
-            // Derive id from label
-            const derivedId = value
+            const derivedId = (value as string)
               .toLowerCase()
               .replace(/[^a-z0-9]+/g, "-")
               .replace(/^-+|-+$/g, "")
-            return { ...v, label: value, id: derivedId }
+            return { ...v, label: value as string, id: derivedId }
           }
           return { ...v, [field]: value }
         }
@@ -989,6 +865,9 @@ export default function ProductMultiStepForm({
       }),
     }))
   }
+
+  
+
 
   const removeVariant = (index: number) => {
     setFormData((prev) => ({
@@ -1007,18 +886,17 @@ export default function ProductMultiStepForm({
     }))
   }
 
-  const updateCustomOption = (index: number, field: string, value: any) => {
+   const updateCustomOption = <K extends keyof CustomOption>(index: number, field: K, value: CustomOption[K]) => {
     setFormData((prev) => ({
       ...prev,
       customOptions: prev.customOptions.map((opt, i) => {
         if (i === index) {
           if (field === "label") {
-            // Derive type from label: lowercase and hyphenate
-            const derivedType = value
+            const derivedType = (value as string)
               .toLowerCase()
               .replace(/[^a-z0-9]+/g, "-")
               .replace(/^-+|-+$/g, "")
-            return { ...opt, label: value, type: derivedType }
+            return { ...opt, label: value as string, type: derivedType }
           }
           return { ...opt, [field]: value }
         }
@@ -1043,7 +921,13 @@ export default function ProductMultiStepForm({
     }))
   }
 
-  const updateOptionChoice = (optionIndex: number, choiceIndex: number, field: string, value: any) => {
+
+   const updateOptionChoice = <K extends keyof Option>(
+    optionIndex: number,
+    choiceIndex: number,
+    field: K,
+    value: Option[K],
+  ) => {
     setFormData((prev) => ({
       ...prev,
       customOptions: prev.customOptions.map((opt, i) =>
@@ -1053,12 +937,11 @@ export default function ProductMultiStepForm({
               options: opt.options.map((choice, j) => {
                 if (j === choiceIndex) {
                   if (field === "label") {
-                    // Derive id from label
-                    const derivedId = value
+                    const derivedId = (value as string)
                       .toLowerCase()
                       .replace(/[^a-z0-9]+/g, "-")
                       .replace(/^-+|-+$/g, "")
-                    return { ...choice, label: value, id: derivedId }
+                    return { ...choice, label: value as string, id: derivedId }
                   }
                   return { ...choice, [field]: value }
                 }
@@ -1086,8 +969,8 @@ export default function ProductMultiStepForm({
 
     const productData = {
       ...formData,
-      allergens: formData.allergens, // Keep as string array
-      categoryId: formData.categoryId, // Keep as string
+      allergens: formData.allergens,  
+      categoryId: formData.categoryId,
     }
 
     console.log("[v0] Submitting product data:", productData)
@@ -1116,13 +999,33 @@ export default function ProductMultiStepForm({
     return true
   }
 
-  const toggleAllergen = (value: string) => {
-    setFormData((prev) => ({
-      ...prev,
-      allergens: prev.allergens.includes(value)
-        ? prev.allergens.filter((a) => a !== value)
-        : [...prev.allergens, value],
-    }))
+  const toggleAllergen = (allergenId: string) => {
+    setFormData((prev) => {
+      const isSelected = prev.allergens.some((a) => a.id === allergenId)
+
+      if (isSelected) {
+        return {
+          ...prev,
+          allergens: prev.allergens.filter((a) => a.id !== allergenId),
+        }
+      } else {
+        const fullAllergen = allergens.find((a) => String(a.id) === allergenId)
+        if (fullAllergen) {
+          return {
+            ...prev,
+            allergens: [
+              ...prev.allergens,
+              {
+                id: fullAllergen.id,
+                code: fullAllergen.code,
+                name: fullAllergen.name,
+              },
+            ],
+          }
+        }
+        return prev
+      }
+    })
   }
 
   const toggleOptionExpansion = (index: number) => {
@@ -1247,23 +1150,20 @@ export default function ProductMultiStepForm({
               {formData.allergens.length === 0 ? (
                 <span className={multiSelectPlaceholderStyles}>Select allergens</span>
               ) : (
-                formData.allergens.map((allergenId) => {
-                  const allergen = allergenOptions.find((a) => a.value === allergenId)
-                  return (
-                    <span key={allergenId} className={multiSelectTagStyles}>
-                      {allergen?.label}
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation()
-                          toggleAllergen(allergenId)
-                        }}
-                        className={removeTagButtonStyles}
-                      >
-                        ×
-                      </button>
-                    </span>
-                  )
-                })
+                formData.allergens.map((allergen) => (
+                  <span key={allergen.id} className={multiSelectTagStyles}>
+                    {allergen.name}
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        toggleAllergen(allergen.id)
+                      }}
+                      className={removeTagButtonStyles}
+                    >
+                      ×
+                    </button>
+                  </span>
+                ))
               )}
             </div>
             {allergenDropdownOpen && (
@@ -1272,7 +1172,7 @@ export default function ProductMultiStepForm({
                   <div
                     key={option.value}
                     className={
-                      formData.allergens.includes(option.value)
+                      formData.allergens.some((a) => a.id === option.value)
                         ? multiSelectOptionActiveStyles
                         : multiSelectOptionStyles
                     }
@@ -1425,7 +1325,7 @@ export default function ProductMultiStepForm({
                 </tbody>
               </table>
             ) : (
-              <div className={emptyStateStyles}>No variants added. Click "Add Variant" to create one.</div>
+              <div className={emptyStateStyles}>No variants added. Click &quot;Add Variant&quot; to create one.</div>
             )}
           </div>
 
@@ -1446,7 +1346,6 @@ export default function ProductMultiStepForm({
 
               return (
                 <div key={optIndex} className={customOptionAccordionStyles}>
-                  {/* Accordion Header - Clickable to expand/collapse */}
                   <div
                     className={
                       isExpanded ? customOptionAccordionHeaderExpandedStyles : customOptionAccordionHeaderStyles
@@ -1623,7 +1522,7 @@ export default function ProductMultiStepForm({
             })}
 
             {formData.customOptions.length === 0 && (
-              <div className={emptyStateStyles}>No custom options added. Click "Add Option Group" to create one.</div>
+              <div className={emptyStateStyles}>No custom options added. Click &quot;Add Option Group&quot; to create one.</div>
             )}
           </div>
 
@@ -1633,7 +1532,7 @@ export default function ProductMultiStepForm({
             <label className={labelStyles}>Additional Notes (Optional)</label>
             <textarea
               placeholder="e.g., Available in gluten-free bun..."
-              value={formData.notes}
+              value={formData.notes ?? ""}
               onChange={(e) => handleChange("notes", e.target.value)}
               className={textareaStyles}
               rows={4}
@@ -1667,7 +1566,7 @@ export default function ProductMultiStepForm({
             </button>
           ) : (
             <button onClick={handleSubmit} className={buttonPrimaryStyles}>
-              {editingProduct ? "Update Product" : "Create Product"}
+              {editingProduct ? "Update" : "Create "}
             </button>
           )}
         </div>

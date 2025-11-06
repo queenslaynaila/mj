@@ -4,10 +4,10 @@ import { css } from "@linaria/atomic"
 import { useState } from "react"
 import ProductTable from "./ProductTable"
 import ProductMultiStepForm from "./MultiStepForm"
-import { ALLERGENS } from "@/types/mock-allergens"
 import { useCategories } from "../hooks/useCategory"
 import { useCreateMenuItem, useDeleteMenuItem, useMenuItems, useUpdateMenuItem } from "../hooks/useMenu"
 import { MenuItem } from "@/types/menu.types"
+import { useAllergens } from "@/hooks/useAllergens"
 
 const tabsContainerStyles = css`
   width: 100%;
@@ -65,6 +65,7 @@ const emptyStateStyles = css`
 
 export default function ProductManagement() {
   const { data: categories = { items: [] }, isLoading, isError } = useCategories();
+  const { data: allergens } = useAllergens();
   const { data: menu, isLoading: menuLoading } = useMenuItems();
   const createMenuItem = useCreateMenuItem();
   const deleteMenuItem = useDeleteMenuItem();
@@ -78,7 +79,7 @@ export default function ProductManagement() {
     setActiveTab("create");
   };
 
-  const handleAddProduct = (newMenu: MenuItem) => {
+  const handleAddProduct = (newMenu: Omit<MenuItem, "createdAt"|"updatedAt">) => {
     createMenuItem.mutate(newMenu, {
       onSuccess: () => {
         setActiveTab("list");
@@ -86,8 +87,7 @@ export default function ProductManagement() {
     });
   };
 
-  const handleUpdateProduct = (updatedMenu: MenuItem) => {
-    console.log("Updating menu item:", updatedMenu);
+  const handleUpdateProduct = (updatedMenu:Omit<MenuItem,"createdAt"|"updatedAt">) => {
     updateMenuItem.mutate(
       { id: updatedMenu.id, data: updatedMenu },
       {
@@ -136,7 +136,7 @@ export default function ProductManagement() {
             <ProductTable
               products={menuItems}
               categories={categoriesList}
-              allergens={ALLERGENS}
+              allergens={allergens || []}
               onDelete={handleDelete}
               onEdit={handleEdit}
             />
@@ -148,7 +148,7 @@ export default function ProductManagement() {
         <div className={tabPanelStyles}>
           <ProductMultiStepForm
             categories={categoriesList}
-            allergens={ALLERGENS}
+            allergens={allergens || []}
             onSubmit={editingProduct ? handleUpdateProduct : handleAddProduct}
             editingProduct={editingProduct}
             onCancel={() => {
