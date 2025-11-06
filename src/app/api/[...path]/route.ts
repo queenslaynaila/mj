@@ -13,7 +13,7 @@ async function handleRequest(req: Request, method: string, params?: { path?: str
   });
 
   try {
-    const config = { method, url, headers, data: undefined as any };
+    const config = { method, url, headers, data: undefined as unknown };
 
     if (method !== "GET" && method !== "HEAD") {
       config.data = await req.json().catch(() => ({}));
@@ -21,6 +21,7 @@ async function handleRequest(req: Request, method: string, params?: { path?: str
 
     const response = await axios(config);
     return NextResponse.json(response.data, { status: response.status });
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     console.error("Proxy error:", error.message);
     return NextResponse.json(

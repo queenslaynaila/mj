@@ -1,4 +1,4 @@
-export interface AllergenInfo {
+interface AllergenInfo {
   id: string;
   code: number;
   name: string;
@@ -11,7 +11,7 @@ export interface Variant {
   priceDelta: number;
 }
 
-export interface CustomOptionChoice {
+interface CustomOptionChoice {
   id: string;
   label: string;
   priceDelta: number;
@@ -24,7 +24,7 @@ export interface CustomOption {
   options: CustomOptionChoice[];
 }
 
-export interface MenuItem {
+interface MenuItem {
   id: string;
   categoryId: string;
   name: string;
@@ -63,7 +63,7 @@ export interface CartItem {
   menuItem: MenuItem;
 }
 
-export interface Cart {
+interface Cart {
   id: string;
   status: string;
   createdAt: string;
@@ -71,12 +71,12 @@ export interface Cart {
   items: CartItem[];
 }
 
-export interface OrderTotal {
+interface OrderTotal {
   amount: number;
   currency: string;
 }
 
-export interface CustomerInfo {
+interface CustomerInfo {
   name: string;
   email: string;
   phone: string;
