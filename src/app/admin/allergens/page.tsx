@@ -6,6 +6,8 @@ import { css } from "@linaria/core";
 import DataTable from "@/components/DataTable";
 import { Allergen, CreateAllergenBody } from "@/types/allergens.types";
 import { useAllergens, useCreateAllergen, useDeleteAllergen, useUpdateAllergen } from "@/hooks/useAllergens";
+import Loader from "@/components/Loader";
+import ErrorMessage from "@/components/Error";
 
 const containerStyles = css`
   padding: 24px;
@@ -81,20 +83,28 @@ export default function Allergies() {
   return (
     <div className={containerStyles}>
       <Header heading="Allergens" description="Manage and track allergens." />
-      <DataTable
-        data={allergens || []}
-        columns={columns}
-        searchable={true}
-        onDelete={handleDelete}
-        onEdit={handleEdit}
-        onCreate={handleCreate as (item: Partial<Allergen>) => void}
-        searchKeys={["name"]}
-        formFields={formFields}
-        searchPlaceholder="Search Allergens by name."
-        paginated={true}
-        itemsPerPage={10}
-        deleteConfirmMessage="Are you sure you want to delete this allergen? This action cannot be undone."
-      />
+       {isLoading && <Loader message="Loading allergens..." />}
+            
+        {isError && !isLoading && (
+          <ErrorMessage message="Unable to load alllergens. Please check your connection and try again." />
+        )}
+
+        {!isLoading && !isError &&(
+          <DataTable
+            data={allergens || []}
+            columns={columns}
+            searchable={true}
+            onDelete={handleDelete}
+            onEdit={handleEdit}
+            onCreate={handleCreate as (item: Partial<Allergen>) => void}
+            searchKeys={["name"]}
+            formFields={formFields}
+            searchPlaceholder="Search Allergens by name."
+            paginated={true}
+            itemsPerPage={10}
+            deleteConfirmMessage="Are you sure you want to delete this allergen? This action cannot be undone."
+          />
+        )}
     </div>
   );
 }

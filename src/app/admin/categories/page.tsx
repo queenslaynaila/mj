@@ -12,6 +12,8 @@ import {
   useDeleteCategory,
   useUpdateCategory,
 } from "@/hooks/useCategory";
+import Loader from "@/components/Loader";
+import ErrorMessage from "@/components/Error";
 
 const containerStyles = css`
   padding: 24px;
@@ -89,7 +91,13 @@ export default function CategoriesPage() {
         description="Manage and track available menu categories."
       />
 
-      {
+      {isLoading && <Loader message="Loading categories..." />}
+      
+      {isError && !isLoading && (
+        <ErrorMessage message="Unable to load categories. Please check your connection and try again." />
+      )}
+
+      { !isLoading && !isError &&
         <DataTable
           data={categories.items}
           columns={columns}

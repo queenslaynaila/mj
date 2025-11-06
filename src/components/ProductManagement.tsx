@@ -8,6 +8,8 @@ import { useCategories } from "../hooks/useCategory"
 import { useCreateMenuItem, useDeleteMenuItem, useMenuItems, useUpdateMenuItem } from "../hooks/useMenu"
 import { MenuItem } from "@/types/menu.types"
 import { useAllergens } from "@/hooks/useAllergens"
+import Loader from "./Loader"
+import ErrorMessage from "./Error"
 
 const tabsContainerStyles = css`
   width: 100%;
@@ -66,7 +68,7 @@ const emptyStateStyles = css`
 export default function ProductManagement() {
   const { data: categories = { items: [] }, isLoading, isError } = useCategories();
   const { data: allergens } = useAllergens();
-  const { data: menu, isLoading: menuLoading } = useMenuItems();
+  const { data: menu, isLoading: menuLoading, isError: menuError } = useMenuItems();
   const createMenuItem = useCreateMenuItem();
   const deleteMenuItem = useDeleteMenuItem();
   const updateMenuItem = useUpdateMenuItem();
@@ -103,8 +105,8 @@ export default function ProductManagement() {
     deleteMenuItem.mutate(id);
   };
 
-  if (isLoading || menuLoading) return <div>Loading...</div>;
-  if (isError) return <div>Failed to load categories</div>;
+  if (isLoading || menuLoading) return  <Loader message="Loading menu..." />;
+  if (isError || menuError  && !isLoading) return <ErrorMessage message="Unable to load menu. Please check your connection and try again." />;
 
   const categoriesList = categories.items ?? [];
   const menuItems = menu?.items ?? [];
