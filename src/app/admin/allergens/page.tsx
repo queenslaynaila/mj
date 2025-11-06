@@ -1,12 +1,11 @@
 "use client";
 
-import { useState } from "react";
 import Header from "@/components/Header";
 import { mqMin } from "@/styles/breakpoints";
 import { css } from "@linaria/core";
-import { ALLERGENS } from "@/types/mock-allergens";
 import DataTable from "@/components/DataTable";
-import { Allergen } from "@/types/allergens.types";
+import { Allergen, CreateAllergenBody } from "@/types/allergens.types";
+import { useAllergens, useCreateAllergen, useDeleteAllergen, useUpdateAllergen } from "@/hooks/useAllergens";
 
 const containerStyles = css`
   padding: 24px;
@@ -22,6 +21,11 @@ const columns = [
     label: "Name",
     render: (allergen: Allergen) => allergen.name,
   },
+   {
+    key: "description",
+    label: "Description",
+    render: (allergen: Allergen) => allergen.description,
+  },
 ];
 
 const formFields = [
@@ -32,30 +36,53 @@ const formFields = [
     placeholder: "Enter name",
     required: true,
   },
+  {
+    key: "description",
+    label: "Description",
+    type: "text" as const,
+    placeholder: "Enter description",
+    required: true,
+  }
 ];
 
 export default function Allergies() {
-  const [allergens, setAllergens] = useState<Allergen[]>(ALLERGENS);
+  const { data: allergens, isLoading, isError } = useAllergens();
+  
+  const createAllergen = useCreateAllergen();
+  const updateAllergen = useUpdateAllergen();
+  const deleteAllergen = useDeleteAllergen();
 
-  const handleDelete = (id: string | number) => {
-    setAllergens(allergens.filter((category) => category.id !== id));
+  const handleCreate = (newAllergen: Omit<CreateAllergenBody, "code">) => {
+  const lastCode = allergens && allergens.length > 0 
+    ? Math.max(...allergens.map((a) => a.code)) 
+    : 0;
+
+  const allergenWithCode: CreateAllergenBody = {
+    ...newAllergen,
+    code: lastCode + 1,
   };
 
+  console.log("Creating allergen with code:", allergenWithCode);
+  createAllergen.mutate(allergenWithCode);
+};
+
+ 
   const handleEdit = (allergen: Allergen) => {
-    alert(`Editing user: ${allergen.name}`);
+    updateAllergen.mutate({
+      id: allergen.id, 
+      payload: { name: allergen.name, description: allergen.description } 
+    });
   };
 
-  const handleCreate = (newUser: Omit<Allergen, "id">) => {
-    const newId = Math.max(...allergens.map((u) => u.id), 0) + 1;
-    setAllergens([...allergens, { ...newUser, id: newId }]);
+  const handleDelete = (id: string) => {
+    deleteAllergen.mutate(id);
   };
-
+ 
   return (
     <div className={containerStyles}>
       <Header heading="Allergens" description="Manage and track allergens." />
-
       <DataTable
-        data={allergens}
+        data={allergens || []}
         columns={columns}
         searchable={true}
         onDelete={handleDelete}
@@ -63,10 +90,10 @@ export default function Allergies() {
         onCreate={handleCreate as (item: Partial<Allergen>) => void}
         searchKeys={["name"]}
         formFields={formFields}
-        searchPlaceholder="Search categories by name."
+        searchPlaceholder="Search Allergens by name."
         paginated={true}
         itemsPerPage={10}
-        deleteConfirmMessage="Are you sure you want to delete this user? This action cannot be undone."
+        deleteConfirmMessage="Are you sure you want to delete this allergen? This action cannot be undone."
       />
     </div>
   );

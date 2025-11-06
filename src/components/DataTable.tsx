@@ -394,7 +394,7 @@ const selectStyles = css`
 `
 
 interface DataItem {
-  id: string | number
+  id: string 
 }
 
 interface Column<T extends DataItem> {
@@ -432,7 +432,7 @@ type FormField = TextFormField | NumberFormField | TextareaFormField | SelectFor
 interface DataTableProps<T extends DataItem> {
   data: T[]
   columns: Column<T>[]
-  onDelete?: (id: string | number) => void
+  onDelete?: (id: string ) => void
   onEdit?: (item: T) => void
   onCreate?: (item: Partial<T>) => void
   formFields?: readonly FormField[]
@@ -466,7 +466,7 @@ export default function DataTable<T extends DataItem>({
   showActions = true,
   createButtonLabel = "Create New",
 }: DataTableProps<T>) {
-  const [deleteId, setDeleteId] = useState<string | number | null>(null)
+  const [deleteId, setDeleteId] = useState('')
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
   const [isFormModalOpen, setIsFormModalOpen] = useState(false)
   const [formMode, setFormMode] = useState<"create" | "edit">("create")
@@ -479,7 +479,7 @@ export default function DataTable<T extends DataItem>({
     if (deleteId !== null && onDelete) {
       onDelete(deleteId)
       setIsDeleteModalOpen(false)
-      setDeleteId(null)
+      setDeleteId("")
     }
   }
 
