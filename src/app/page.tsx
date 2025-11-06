@@ -323,8 +323,6 @@ export default function SignInPage() {
             </div>
           </div>
 
-          
-
           <button type="submit" className={submitButtonStyles}>
             Log In
           </button>
