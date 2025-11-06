@@ -2,221 +2,38 @@
 
 import { useState, useMemo } from "react"
 import { css } from "@linaria/core"
-import { FaSearch, FaClock, FaChevronDown, FaChevronRight } from "react-icons/fa"
-import type { Order, OrderStatus } from "@/types/order.types"
+import { FaSearch, FaClock, FaChevronDown, FaChevronRight, FaChevronLeft } from "react-icons/fa"
+import type { OrderStatus } from "@/types/order.types"
+import { useOrders } from "@/hooks/useOrder"
+import { useUpdateOrder } from "@/hooks/useOrder"
+import Loader from "@/components/Loader"
+import ErrorMessage from "@/components/Error"
 
-// Mock order data
-const mockOrders: Order[] = [
-  {
-    id: "ORD-001",
-    cartId: "CART-001",
-    status: "processing",
-    total: { amount: 45.5, currency: "USD" },
-    customer: {
-      name: "John Smith",
-      email: "john.smith@example.com",
-      phone: "+1-555-0123",
-    },
-    pickupTime: "2025-11-06T18:30:00.000Z",
-    cart: {
-      id: "CART-001",
-      status: "active",
-      items: [
-        {
-          id: "ITEM-001",
-          cartId: "CART-001",
-          menuItemId: "MENU-001",
-          variantId: "12inch",
-          quantity: 2,
-          selectedOptions: [{ optionType: "sauce", choiceId: "marinara" }],
-          addonItems: [],
-          menuItem: {
-            id: "MENU-001",
-            categoryId: "1",
-            name: "Margherita Pizza",
-            description: "Classic pizza with tomato and mozzarella",
-            price: 13,
-            currency: "USD",
-            allergens: [1, 2],
-            variants: [
-              { id: "12inch", label: '12"', price: 13 },
-              { id: "16inch", label: '16"', price: 17 },
-            ],
-            customOptions: [],
-          },
-        },
-        {
-          id: "ITEM-002",
-          cartId: "CART-001",
-          menuItemId: "MENU-002",
-          quantity: 1,
-          selectedOptions: [],
-          addonItems: [],
-          menuItem: {
-            id: "MENU-002",
-            categoryId: "2",
-            name: "Caesar Salad",
-            description: "Fresh romaine with caesar dressing",
-            price: 9.5,
-            currency: "USD",
-            allergens: [2],
-            variants: [],
-            customOptions: [],
-          },
-        },
-      ],
-    },
-  },
-  {
-    id: "ORD-002",
-    cartId: "CART-002",
-    status: "preparing",
-    total: { amount: 32.0, currency: "USD" },
-    customer: {
-      name: "Sarah Johnson",
-      email: "sarah.j@example.com",
-      phone: "+1-555-0456",
-    },
-    pickupTime: "2025-11-06T19:00:00.000Z",
-    cart: {
-      id: "CART-002",
-      status: "active",
-      items: [
-        {
-          id: "ITEM-003",
-          cartId: "CART-002",
-          menuItemId: "MENU-003",
-          variantId: "12pc",
-          quantity: 1,
-          selectedOptions: [{ optionType: "wing-sauce", choiceId: "buffalo" }],
-          addonItems: [],
-          menuItem: {
-            id: "MENU-003",
-            categoryId: "3",
-            name: "Buffalo Wings",
-            description: "Crispy chicken wings",
-            price: 16,
-            currency: "USD",
-            allergens: [],
-            variants: [
-              { id: "6pc", label: "6 pieces", priceDelta: -4 },
-              { id: "12pc", label: "12 pieces", price: 16 },
-            ],
-            customOptions: [
-              {
-                type: "wing-sauce",
-                label: "Wing Flavor",
-                required: true,
-                options: [
-                  { id: "buffalo", label: "Classic Buffalo" },
-                  { id: "bbq", label: "BBQ" },
-                ],
-              },
-            ],
-          },
-        },
-        {
-          id: "ITEM-004",
-          cartId: "CART-002",
-          menuItemId: "MENU-004",
-          quantity: 2,
-          selectedOptions: [],
-          addonItems: [],
-          menuItem: {
-            id: "MENU-004",
-            categoryId: "4",
-            name: "Soft Drink",
-            description: "Refreshing beverage",
-            price: 3,
-            currency: "USD",
-            allergens: [],
-            variants: [],
-            customOptions: [],
-          },
-        },
-      ],
-    },
-  },
-  {
-    id: "ORD-003",
-    cartId: "CART-003",
-    status: "ready-for-collection",
-    total: { amount: 28.5, currency: "USD" },
-    customer: {
-      name: "Michael Brown",
-      email: "m.brown@example.com",
-      phone: "+1-555-0789",
-    },
-    pickupTime: "2025-11-06T18:45:00.000Z",
-    cart: {
-      id: "CART-003",
-      status: "active",
-      items: [
-        {
-          id: "ITEM-005",
-          cartId: "CART-003",
-          menuItemId: "MENU-005",
-          quantity: 1,
-          selectedOptions: [],
-          addonItems: [],
-          menuItem: {
-            id: "MENU-005",
-            categoryId: "5",
-            name: "Cheeseburger",
-            description: "Juicy beef burger with cheese",
-            price: 12.5,
-            currency: "USD",
-            allergens: [1, 2],
-            variants: [],
-            customOptions: [],
-          },
-        },
-        {
-          id: "ITEM-006",
-          cartId: "CART-003",
-          menuItemId: "MENU-006",
-          quantity: 1,
-          selectedOptions: [],
-          addonItems: [],
-          menuItem: {
-            id: "MENU-006",
-            categoryId: "5",
-            name: "French Fries",
-            description: "Crispy golden fries",
-            price: 5,
-            currency: "USD",
-            allergens: [],
-            variants: [],
-            customOptions: [],
-          },
-        },
-      ],
-    },
-  },
-]
-
-// Styles
 const containerStyles = css`
   min-height: 100vh;
-  background-color: #f9fafb;
+  background: linear-gradient(135deg, #f0fdf4 0%, #f9fafb 100%);
   padding: 2rem;
 `
 
 const headerStyles = css`
   max-width: 1400px;
   margin: 0 auto 2rem;
+  background: linear-gradient(135deg, #059669 0%, #047857 100%);
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 `
 
 const titleStyles = css`
   font-size: 2rem;
   font-weight: 700;
-  color: #111827;
+  color: #ffffff;
   margin-bottom: 0.5rem;
 `
 
 const subtitleStyles = css`
   font-size: 1rem;
-  color: #6b7280;
+  color: #d1fae5;
 `
 
 const searchContainerStyles = css`
@@ -230,14 +47,14 @@ const searchIconStyles = css`
   left: 1rem;
   top: 50%;
   transform: translateY(-50%);
-  color: #6b7280;
+  color: #059669;
   font-size: 1.25rem;
 `
 
 const searchInputStyles = css`
   width: 100%;
   padding: 0.875rem 1rem 0.875rem 3rem;
-  border: 2px solid #e5e7eb;
+  border: 2px solid #d1fae5;
   border-radius: 0.5rem;
   font-size: 1rem;
   color: #111827;
@@ -246,8 +63,8 @@ const searchInputStyles = css`
 
   &:focus {
     outline: none;
-    border-color: #3b82f6;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    border-color: #059669;
+    box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.1);
   }
 
   &::placeholder {
@@ -270,8 +87,8 @@ const tableStyles = css`
 `
 
 const tableHeaderStyles = css`
-  background-color: #f9fafb;
-  border-bottom: 2px solid #e5e7eb;
+  background: linear-gradient(135deg, #ecfdf5 0%, #f9fafb 100%);
+  border-bottom: 2px solid #d1fae5;
 `
 
 const thStyles = css`
@@ -279,7 +96,7 @@ const thStyles = css`
   text-align: left;
   font-size: 0.875rem;
   font-weight: 600;
-  color: #374151;
+  color: #047857;
   white-space: nowrap;
 `
 
@@ -292,7 +109,7 @@ const trStyles = css`
   transition: background-color 0.15s;
 
   &:hover {
-    background-color: #f9fafb;
+    background-color: #f0fdf4;
   }
 
   &:last-child {
@@ -319,13 +136,8 @@ const expandButtonStyles = css`
   transition: color 0.15s;
 
   &:hover {
-    color: #111827;
+    color: #059669;
   }
-`
-
-const orderIdCellStyles = css`
-  font-weight: 600;
-  color: #111827;
 `
 
 const customerCellStyles = css`
@@ -344,6 +156,12 @@ const customerContactStyles = css`
   color: #6b7280;
 `
 
+const statusCellStyles = css`
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+`
+
 const statusBadgeStyles = css`
   display: inline-block;
   padding: 0.375rem 0.75rem;
@@ -352,6 +170,15 @@ const statusBadgeStyles = css`
   font-weight: 600;
   text-transform: capitalize;
   white-space: nowrap;
+  width: fit-content;
+`
+
+const collectedTimeStyles = css`
+  font-size: 0.75rem;
+  color: #6b7280;
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
 `
 
 const itemsCountStyles = css`
@@ -362,15 +189,6 @@ const itemsCountStyles = css`
 const totalStyles = css`
   font-weight: 600;
   color: #111827;
-  white-space: nowrap;
-`
-
-const pickupTimeStyles = css`
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 0.875rem;
-  color: #6b7280;
   white-space: nowrap;
 `
 
@@ -387,14 +205,26 @@ const statusSelectStyles = css`
   min-width: 160px;
 
   &:hover {
-    border-color: #3b82f6;
+    border-color: #059669;
   }
 
   &:focus {
     outline: none;
-    border-color: #3b82f6;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    border-color: #059669;
+    box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.1);
   }
+
+  &:disabled {
+    background-color: #f3f4f6;
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+`
+
+const disabledStatusTextStyles = css`
+  font-size: 0.875rem;
+  color: #6b7280;
+  font-style: italic;
 `
 
 const expandedRowStyles = css`
@@ -435,8 +265,25 @@ const itemNameStyles = css`
   margin-bottom: 0.25rem;
 `
 
-const itemDetailsStyles = css`
-  font-size: 0.75rem;
+const itemDetailsContainerStyles = css`
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  margin-top: 0.5rem;
+`
+
+const itemDetailRowStyles = css`
+  display: flex;
+  gap: 0.5rem;
+  font-size: 0.8125rem;
+`
+
+const itemDetailLabelStyles = css`
+  font-weight: 600;
+  color: #374151;
+`
+
+const itemDetailValueStyles = css`
   color: #6b7280;
 `
 
@@ -454,12 +301,119 @@ const emptyStateStyles = css`
   font-size: 1.125rem;
 `
 
+const paginationContainerStyles = css`
+  max-width: 1400px;
+  margin: 2rem auto 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background-color: #ffffff;
+  border: 2px solid #e5e7eb;
+  border-radius: 0.75rem;
+`
+
+const paginationInfoStyles = css`
+  font-size: 0.875rem;
+  color: #6b7280;
+  font-weight: 500;
+`
+
+const paginationButtonsStyles = css`
+  display: flex;
+  gap: 0.5rem;
+`
+
+const paginationButtonStyles = css`
+  padding: 0.5rem 1rem;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #111827;
+  background-color: #ffffff;
+  cursor: pointer;
+  transition: all 0.15s;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  &:hover:not(:disabled) {
+    border-color: #059669;
+    background-color: #f0fdf4;
+    color: #059669;
+  }
+
+  &:disabled {
+    background-color: #f3f4f6;
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+`
+
+const loadingContainerStyles = css`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  gap: 1rem;
+`
+
+const loadingSpinnerStyles = css`
+  font-size: 3rem;
+  color: black;
+  animation: spin 1s linear infinite;
+
+  @keyframes spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+`
+
+const loadingTextStyles = css`
+  font-size: 1.125rem;
+  color: #6b7280;
+  font-weight: 500;
+`
+
+const errorContainerStyles = css`
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2rem;
+  background-color: #fef2f2;
+  border: 2px solid #fecaca;
+  border-radius: 0.75rem;
+  text-align: center;
+`
+
+const errorTitleStyles = css`
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #991b1b;
+  margin-bottom: 0.5rem;
+`
+
+const errorMessageStyles = css`
+  font-size: 1rem;
+  color: #7f1d1d;
+`
+
 export default function AdminOrdersPage() {
-  const [orders, setOrders] = useState<Order[]>(mockOrders)
+  const { data: ordersData = { items: [] }, isLoading, isError } = useOrders()
+  const updateOrder = useUpdateOrder()
+
   const [searchQuery, setSearchQuery] = useState("")
   const [expandedOrders, setExpandedOrders] = useState<Set<string>>(new Set())
+  const [currentPage, setCurrentPage] = useState(1)
+  const ordersPerPage = 10
 
-  // Filter orders based on search query
+  const orders = ordersData.items
+
   const filteredOrders = useMemo(() => {
     if (!searchQuery.trim()) return orders
 
@@ -473,12 +427,13 @@ export default function AdminOrdersPage() {
     )
   }, [orders, searchQuery])
 
-  // Update order status
-  const updateOrderStatus = (orderId: string, newStatus: OrderStatus) => {
-    setOrders((prev) => prev.map((order) => (order.id === orderId ? { ...order, status: newStatus } : order)))
-  }
+  const totalPages = Math.ceil(filteredOrders.length / ordersPerPage)
+  const paginatedOrders = useMemo(() => {
+    const startIndex = (currentPage - 1) * ordersPerPage
+    const endIndex = startIndex + ordersPerPage
+    return filteredOrders.slice(startIndex, endIndex)
+  }, [filteredOrders, currentPage])
 
-  // Toggle order items expansion
   const toggleOrderExpansion = (orderId: string) => {
     setExpandedOrders((prev) => {
       const newSet = new Set(prev)
@@ -491,7 +446,6 @@ export default function AdminOrdersPage() {
     })
   }
 
-  // Get status badge color
   const getStatusColor = (status: OrderStatus) => {
     switch (status) {
       case "processing":
@@ -507,7 +461,6 @@ export default function AdminOrdersPage() {
     }
   }
 
-  // Format pickup time
   const formatPickupTime = (isoString: string) => {
     const date = new Date(isoString)
     return date.toLocaleString("en-US", {
@@ -519,155 +472,223 @@ export default function AdminOrdersPage() {
     })
   }
 
-  // Get item details (variant, options)
   const getItemDetails = (item: any) => {
-    const details: string[] = []
+    const details: { label: string; value: string }[] = []
 
-    // Add variant info
     if (item.variantId && item.menuItem.variants) {
       const variant = item.menuItem.variants.find((v: any) => v.id === item.variantId)
       if (variant) {
-        details.push(variant.label)
+        details.push({ label: "Size/Variant", value: variant.label })
       }
     }
 
-    // Add selected options
     if (item.selectedOptions && item.selectedOptions.length > 0) {
       item.selectedOptions.forEach((opt: any) => {
         const customOption = item.menuItem.customOptions?.find((co: any) => co.type === opt.optionType)
         if (customOption) {
           const choice = customOption.options.find((o: any) => o.id === opt.choiceId)
           if (choice) {
-            details.push(choice.label)
+            details.push({ label: customOption.label, value: choice.label })
           }
         }
       })
     }
 
-    return details.join(", ")
+    return details
+  }
+
+  const handleStatusUpdate = (orderId: string, newStatus: OrderStatus) => {
+    if (newStatus === "collected") {
+      updateOrder.mutate({
+        orderId,
+        data: {
+          status: newStatus,
+          pickupTime: new Date().toISOString(),
+        },
+      })
+    } else {
+      updateOrder.mutate({
+        orderId,
+        data: {
+          status: newStatus,
+        },
+      })
+    }
   }
 
   return (
-    <div  >
-       
-
-      <div className={searchContainerStyles}>
-        <FaSearch className={searchIconStyles} />
-        <input
-          type="text"
-          placeholder="Search by customer email, phone, name, or order ID..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          className={searchInputStyles}
-        />
+    <div className={containerStyles}>
+      <div className={headerStyles}>
+        <h1 className={titleStyles}>M.J. O'Connor's - Order Management</h1>
+        <p className={subtitleStyles}>Monitor and manage customer orders in real-time</p>
       </div>
 
-      {filteredOrders.length === 0 ? (
-        <div className={emptyStateStyles}>
-          {searchQuery ? "No orders found matching your search." : "No orders yet."}
-        </div>
-      ) : (
-        <div className={tableContainerStyles}>
-          <table className={tableStyles}>
-            <thead className={tableHeaderStyles}>
-              <tr>
-                <th className={thStyles} style={{ width: "40px" }}></th>
-                <th className={thStyles}>Order ID</th>
-                <th className={thStyles}>Customer</th>
-                <th className={thStyles}>Status</th>
-                <th className={thStyles}>Items</th>
-                <th className={thStyles}>Total</th>
-                <th className={thStyles}>Pickup Time</th>
-                <th className={thStyles}>Update Status</th>
-              </tr>
-            </thead>
-            <tbody className={tbodyStyles}>
-              {filteredOrders.map((order) => {
-                const statusColor = getStatusColor(order.status)
-                const isExpanded = expandedOrders.has(order.id)
+      {isLoading && <Loader message="Loading orders..." />}
 
-                return (
-                  <>
-                    <tr key={order.id} className={trStyles}>
-                      <td className={tdStyles}>
-                        <button className={expandButtonStyles} onClick={() => toggleOrderExpansion(order.id)}>
-                          {isExpanded ? <FaChevronDown /> : <FaChevronRight />}
-                        </button>
-                      </td>
-                      <td className={tdStyles}>
-                        <div className={orderIdCellStyles}>{order.id}</div>
-                      </td>
-                      <td className={tdStyles}>
-                        <div className={customerCellStyles}>
-                          <span className={customerNameStyles}>{order.customer.name}</span>
-                          <span className={customerContactStyles}>{order.customer.email}</span>
-                          <span className={customerContactStyles}>{order.customer.phone}</span>
-                        </div>
-                      </td>
-                      <td className={tdStyles}>
-                        <span
-                          className={statusBadgeStyles}
-                          style={{ backgroundColor: statusColor.bg, color: statusColor.text }}
-                        >
-                          {order.status.replace("-", " ")}
-                        </span>
-                      </td>
-                      <td className={tdStyles}>
-                        <span className={itemsCountStyles}>{order.cart.items.length} items</span>
-                      </td>
-                      <td className={tdStyles}>
-                        <span className={totalStyles}>${order.total.amount.toFixed(2)}</span>
-                      </td>
-                      <td className={tdStyles}>
-                        <div className={pickupTimeStyles}>
-                          <FaClock />
-                          <span>{formatPickupTime(order.pickupTime)}</span>
-                        </div>
-                      </td>
-                      <td className={tdStyles}>
-                        <select
-                          value={order.status}
-                          onChange={(e) => updateOrderStatus(order.id, e.target.value as OrderStatus)}
-                          className={statusSelectStyles}
-                          onClick={(e) => e.stopPropagation()}
-                        >
-                          <option value="processing">Processing</option>
-                          <option value="preparing">Preparing</option>
-                          <option value="ready-for-collection">Ready for Collection</option>
-                          <option value="collected">Collected</option>
-                        </select>
-                      </td>
+      {isError && !isLoading && (
+        <ErrorMessage message="Unable to load orders. Please check your connection and try again." />
+      )}
+
+      {!isLoading && !isError && (
+        <>
+          <div className={searchContainerStyles}>
+            <FaSearch className={searchIconStyles} />
+            <input
+              type="text"
+              placeholder="Search by customer email, phone, name, or order ID..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className={searchInputStyles}
+            />
+          </div>
+
+          {filteredOrders.length === 0 ? (
+            <div className={emptyStateStyles}>
+              {searchQuery ? "No orders found matching your search." : "No orders yet."}
+            </div>
+          ) : (
+            <>
+              <div className={tableContainerStyles}>
+                <table className={tableStyles}>
+                  <thead className={tableHeaderStyles}>
+                    <tr>
+                      <th className={thStyles} style={{ width: "40px" }}></th>
+                      <th className={thStyles}>Customer</th>
+                      <th className={thStyles}>Status</th>
+                      <th className={thStyles}>Items</th>
+                      <th className={thStyles}>Total</th>
+                      <th className={thStyles}>Update Status</th>
                     </tr>
+                  </thead>
+                  <tbody className={tbodyStyles}>
+                    {paginatedOrders.map((order) => {
+                      const statusColor = getStatusColor(order.status)
+                      const isExpanded = expandedOrders.has(order.id)
+                      const isCollected = order.status === "collected"
 
-                    {isExpanded && (
-                      <tr className={expandedRowStyles}>
-                        <td colSpan={8}>
-                          <div className={expandedContentStyles}>
-                            <div className={expandedTitleStyles}>Order Items</div>
-                            <div className={itemsListStyles}>
-                              {order.cart.items.map((item) => {
-                                const details = getItemDetails(item)
-                                return (
-                                  <div key={item.id} className={itemRowStyles}>
-                                    <div style={{ flex: 1 }}>
-                                      <div className={itemNameStyles}>{item.menuItem.name}</div>
-                                      {details && <div className={itemDetailsStyles}>{details}</div>}
-                                    </div>
-                                    <span className={itemQuantityStyles}>×{item.quantity}</span>
+                      return (
+                        <>
+                          <tr key={order.id} className={trStyles}>
+                            <td className={tdStyles}>
+                              <button className={expandButtonStyles} onClick={() => toggleOrderExpansion(order.id)}>
+                                {isExpanded ? <FaChevronDown /> : <FaChevronRight />}
+                              </button>
+                            </td>
+                            <td className={tdStyles}>
+                              <div className={customerCellStyles}>
+                                <span className={customerNameStyles}>{order.customer.name}</span>
+                                <span className={customerContactStyles}>{order.customer.email}</span>
+                                <span className={customerContactStyles}>{order.customer.phone}</span>
+                              </div>
+                            </td>
+                            <td className={tdStyles}>
+                              <div className={statusCellStyles}>
+                                <span
+                                  className={statusBadgeStyles}
+                                  style={{ backgroundColor: statusColor.bg, color: statusColor.text }}
+                                >
+                                  {order.status.replace("-", " ")}
+                                </span>
+                                {isCollected && (
+                                  <div className={collectedTimeStyles}>
+                                    <FaClock />
+                                    <span>Picked up at {formatPickupTime(order.pickupTime)}</span>
                                   </div>
-                                )
-                              })}
-                            </div>
-                          </div>
-                        </td>
-                      </tr>
-                    )}
-                  </>
-                )
-              })}
-            </tbody>
-          </table>
-        </div>
+                                )}
+                              </div>
+                            </td>
+                            <td className={tdStyles}>
+                              <span className={itemsCountStyles}>{order.cart.items.length} items</span>
+                            </td>
+                            <td className={tdStyles}>
+                              <span className={totalStyles}>${order.total.amount.toFixed(2)}</span>
+                            </td>
+                            <td className={tdStyles}>
+                              {isCollected ? (
+                                <span className={disabledStatusTextStyles}>Order completed</span>
+                              ) : (
+                                <select
+                                  value={order.status}
+                                  onChange={(e) => handleStatusUpdate(order.id, e.target.value as OrderStatus)}
+                                  className={statusSelectStyles}
+                                  onClick={(e) => e.stopPropagation()}
+                                >
+                                  <option value="processing">Processing</option>
+                                  <option value="preparing">Preparing</option>
+                                  <option value="ready-for-collection">Ready for Collection</option>
+                                  <option value="collected">Collected</option>
+                                </select>
+                              )}
+                            </td>
+                          </tr>
+
+                          {isExpanded && (
+                            <tr className={expandedRowStyles}>
+                              <td colSpan={6}>
+                                <div className={expandedContentStyles}>
+                                  <div className={expandedTitleStyles}>Order Items - Kitchen Details</div>
+                                  <div className={itemsListStyles}>
+                                    {order.cart.items.map((item) => {
+                                      const details = getItemDetails(item)
+                                      return (
+                                        <div key={item.id} className={itemRowStyles}>
+                                          <div style={{ flex: 1 }}>
+                                            <div className={itemNameStyles}>{item.menuItem.name}</div>
+                                            {details.length > 0 && (
+                                              <div className={itemDetailsContainerStyles}>
+                                                {details.map((detail, idx) => (
+                                                  <div key={idx} className={itemDetailRowStyles}>
+                                                    <span className={itemDetailLabelStyles}>{detail.label}:</span>
+                                                    <span className={itemDetailValueStyles}>{detail.value}</span>
+                                                  </div>
+                                                ))}
+                                              </div>
+                                            )}
+                                          </div>
+                                          <span className={itemQuantityStyles}>×{item.quantity}</span>
+                                        </div>
+                                      )
+                                    })}
+                                  </div>
+                                </div>
+                              </td>
+                            </tr>
+                          )}
+                        </>
+                      )
+                    })}
+                  </tbody>
+                </table>
+              </div>
+
+              {totalPages > 1 && (
+                <div className={paginationContainerStyles}>
+                  <div className={paginationInfoStyles}>
+                    Page {currentPage} of {totalPages} ({filteredOrders.length} total orders)
+                  </div>
+                  <div className={paginationButtonsStyles}>
+                    <button
+                      className={paginationButtonStyles}
+                      onClick={() => setCurrentPage((prev) => prev - 1)}
+                      disabled={currentPage === 1}
+                    >
+                      <FaChevronLeft />
+                      Previous
+                    </button>
+                    <button
+                      className={paginationButtonStyles}
+                      onClick={() => setCurrentPage((prev) => prev + 1)}
+                      disabled={currentPage === totalPages}
+                    >
+                      Next
+                      <FaChevronRight />
+                    </button>
+                  </div>
+                </div>
+              )}
+            </>
+          )}
+        </>
       )}
     </div>
   )
