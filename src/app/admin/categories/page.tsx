@@ -81,8 +81,7 @@ export default function CategoriesPage() {
     updateCategory.mutate({ id: category.id, payload: category });
   };
 
-  if (isLoading) return <p>Loading...</p>;
-  if (isError) return <p>Failed to load categories.</p>;
+  
 
   return (
     <div className={containerStyles}>
