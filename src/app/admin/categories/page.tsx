@@ -1,3 +1,4 @@
+ 
 "use client";
 
 import { css } from "@linaria/core";
@@ -6,8 +7,12 @@ import Header from "@/app/components/Header";
 import EmptyStateMessage from "@/app/components/EmptyStateMessage";
 import DataTable from "@/app/components/DataTable";
 import { Category } from "@/types/categories.types";
-import { useCategories, useCreateCategory, useDeleteCategory } from "@/app/hooks/useCategory";
-
+import {
+  useCategories,
+  useCreateCategory,
+  useDeleteCategory,
+} from "@/app/hooks/useCategory";
+import { updateCategory } from "@/app/api/categories.api";
 
 const containerStyles = css`
   padding: 24px;
@@ -25,6 +30,13 @@ const formFields = [
     placeholder: "Enter name",
     required: true,
   },
+   {
+    key: "description",
+    label: "Description",
+    type: "text" as const,
+    placeholder: "Enter description",
+    required: false,
+  }
 ];
 
 const columns = [
@@ -33,19 +45,26 @@ const columns = [
     label: "Name",
     render: (category: Category) => category.name,
   },
-   {
+  {
     key: "description",
     label: "Description",
-    render: (category: Category) => category.description,
+    render: (category: Category) =>
+      category.description === null ? "Null" : category.description,
   },
 ];
 
 export default function CategoriesPage() {
-  const { data: categories = { items: [] }, isLoading, isError } = useCategories();
+  const {
+    data: categories = { items: [] },
+    isLoading,
+    isError,
+  } = useCategories();
   const createCategory = useCreateCategory();
   const deleteCategory = useDeleteCategory();
 
-  const handleCreate = (newCategory: Omit<Category, "id" | "createdAt" | "updatedAt">) => {
+  const handleCreate = (
+    newCategory: Omit<Category, "id" | "createdAt" | "updatedAt">
+  ) => {
     const id = newCategory.name.toLowerCase().replace(/\s+/g, "-");
     createCategory.mutate({
       id,
@@ -59,7 +78,7 @@ export default function CategoriesPage() {
   };
 
   const handleEdit = (category: Category) => {
-    alert(`Editing category: ${category.name}`);
+    updateCategory(category.id, category);
   };
 
   if (isLoading) return <p>Loading...</p>;
@@ -67,14 +86,19 @@ export default function CategoriesPage() {
 
   return (
     <div className={containerStyles}>
-      <Header heading="Menu Categories" description="Manage and track available menu categories." />
+      <Header
+        heading="Menu Categories"
+        description="Manage and track available menu categories."
+      />
 
-      {categories.items.length === 0 ? (
+      {categories.items.length === 0 && (
         <EmptyStateMessage
           title="No Categories"
           message="There are currently no categories configured."
         />
-      ) : (
+      )}
+
+      {
         <DataTable
           data={categories.items}
           columns={columns}
@@ -89,7 +113,8 @@ export default function CategoriesPage() {
           itemsPerPage={10}
           deleteConfirmMessage="Are you sure you want to delete this category? This action cannot be undone."
         />
-      )}
+      }
     </div>
   );
 }
+ 
