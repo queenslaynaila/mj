@@ -86,7 +86,7 @@ const theadStyles = css`
 `
 
 const thStyles = css`
-  color: #4C4A48;
+  color: black;
   font-weight: 600;
   font-size: 14px;
   padding: 12px 16px;

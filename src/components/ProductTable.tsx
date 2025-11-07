@@ -157,10 +157,9 @@ const theadStyles = css`
 `
 
 const thStyles = css`
-  color: #4C4A48;
+  color: black;
   font-weight: 600;
   font-size: 13px;
-  
   letter-spacing: 0.5px;
   padding: 16px;
   text-align: left;
@@ -181,6 +180,8 @@ const tbodyStyles = css`
 const tdStyles = css`
   padding: 16px;
   font-size: 14px;
+  color: #4C4A48;
+  border-top: 1px solid #E3E2E3;
 `
 
 const imageContainerStyles = css`
