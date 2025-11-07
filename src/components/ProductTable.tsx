@@ -184,39 +184,6 @@ const tdStyles = css`
   border-top: 1px solid #E3E2E3;
 `
 
-const imageContainerStyles = css`
-  width: 48px;
-  height: 48px;
-  overflow: hidden;
-  border-radius: 8px;
-  border: 1px solid #E3E2E3;
-  flex-shrink: 0;
-`
-
-const imageStyles = css`
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-`
-
-const noImageStyles = css`
-  width: 48px;
-  height: 48px;
-  background-color: #F8F3F2;
-  border: 1px solid #E3E2E3;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-`
-
-const noImageTextStyles = css`
-  font-size: 12px;
-  color: #DED4D1;
-  font-weight: 500;
-`
-
 const productNameStyles = css`
   font-weight: 600;
   font-size: 14px;
@@ -491,17 +458,7 @@ export default function ProductTable({
 
   const rows = paginatedProducts.map((product) => (
     <tr key={product.id}>
-      <td className={tdStyles}>
-        {product.image ? (
-          <div className={imageContainerStyles}>
-            <img src={product.image || "/placeholder.svg"} alt={product.name} className={imageStyles} />
-          </div>
-        ) : (
-          <div className={noImageStyles}>
-            <span className={noImageTextStyles}>No img</span>
-          </div>
-        )}
-      </td>
+       
       <td className={tdStyles}>
         <p className={productNameStyles}>{product.name}</p>
       </td>
@@ -647,7 +604,6 @@ export default function ProductTable({
         <table className={tableStyles}>
           <thead className={theadStyles}>
             <tr>
-              <th className={thStyles}>Image</th>
               <th className={thStyles}>Name</th>
               <th className={thStyles}>Category</th>
               <th className={thStyles}>Price</th>
