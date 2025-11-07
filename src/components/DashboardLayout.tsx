@@ -5,6 +5,7 @@ import { useState } from "react"
 import { css, cx } from "@linaria/atomic"
 import { IoMenuOutline } from "react-icons/io5"
 import Sidebar from "./Sidebar"
+import { useRouter } from "next/navigation";
 
 const FlexBetweenCenterStyles = css`
   display: flex;
@@ -176,10 +177,12 @@ type LayoutProps = {
 const DashboardLayout: React.FC<LayoutProps> = ({ children }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+  const router = useRouter();
 
   const handleSignOut = (e: React.MouseEvent) => {
     e.preventDefault()
     setIsDropdownOpen(false)
+      router.push("/");
   }
 
   const handleToggleDropdown = () => setIsDropdownOpen((open) => !open)
