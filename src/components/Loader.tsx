@@ -19,7 +19,7 @@ const loadingContainerStyles = css`
 
 const loadingSpinnerStyles = css`
   font-size: 3rem;
-  color: black;
+  color: #64483E;
   animation: spin 1s linear infinite;
 
   @keyframes spin {
@@ -34,7 +34,7 @@ const loadingSpinnerStyles = css`
 
 const loadingTextStyles = css`
   font-size: 1.125rem;
-  color: #6b7280;
+  color: #4C4A48;
   font-weight: 500;
 `;
 

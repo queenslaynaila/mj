@@ -16,11 +16,11 @@ interface ProductFormProps {
 }
 
 const cardStyles = css`
-  background-color: #ffffff;
-  border: 1px solid #e5e5e5;
+  background-color: #FFFDFE;
+  border: 1px solid #E3E2E3;
   border-radius: 8px;
   padding: 24px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 3px rgba(100, 72, 62, 0.1);
 `
 
 const stepperContainerStyles = css`
@@ -33,8 +33,8 @@ const stepperContainerStyles = css`
 
 const stepBoxStyles = css`
   padding: 8px 16px;
-  background-color: #f5f5f5;
-  color: #1a1a1a;
+  background-color: #F0EAE5;
+  color: #4C4A48;
   border-radius: 4px;
   cursor: default;
   transition: all 0.2s ease-in-out;
@@ -42,8 +42,8 @@ const stepBoxStyles = css`
 
 const stepBoxActiveStyles = css`
   padding: 8px 16px;
-  background-color: #1a1a1a;
-  color: #ffffff;
+  background-color: #64483E;
+  color: #FFFDFE;
   border-radius: 4px;
   cursor: default;
   transition: all 0.2s ease-in-out;
@@ -51,14 +51,14 @@ const stepBoxActiveStyles = css`
 
 const stepBoxClickableStyles = css`
   padding: 8px 16px;
-  background-color: #f5f5f5;
-  color: #1a1a1a;
+  background-color: #F0EAE5;
+  color: #4C4A48;
   border-radius: 4px;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
 
   &:hover {
-    background-color: #e5e5e5;
+    background-color: #DED4D1;
   }
 `
 
@@ -69,7 +69,7 @@ const stepTextStyles = css`
 `
 
 const arrowStyles = css`
-  color: #9ca3af;
+  color: #DED4D1;
   font-size: 14px;
 `
 
@@ -82,7 +82,7 @@ const stackStyles = css`
 const titleStyles = css`
   font-size: 20px;
   font-weight: 600;
-  color: #1a1a1a;
+  color: #4C4A48;
   margin: 0 0 16px 0;
 `
 
@@ -91,21 +91,22 @@ const labelStyles = css`
   font-size: 14px;
   font-weight: 500;
   margin-bottom: 6px;
-  color: #1a1a1a;
+  color: #4C4A48;
 `
 
 const inputStyles = css`
   width: 100%;
   padding: 10px 12px;
   font-size: 14px;
-  border: 1px solid #e5e5e5;
+  border: 1px solid #E3E2E3;
   border-radius: 4px;
-  background-color: #ffffff;
+  background-color: #FFFDFE;
+  color: #4C4A48;
   outline: none;
   transition: border-color 0.2s ease-in-out;
 
   &:focus {
-    border-color: #1a1a1a;
+    border-color: #64483E;
   }
 `
 
@@ -113,9 +114,10 @@ const textareaStyles = css`
   width: 100%;
   padding: 10px 12px;
   font-size: 14px;
-  border: 1px solid #e5e5e5;
+  border: 1px solid #E3E2E3;
   border-radius: 4px;
-  background-color: #ffffff;
+  background-color: #FFFDFE;
+  color: #4C4A48;
   outline: none;
   transition: border-color 0.2s ease-in-out;
   min-height: 80px;
@@ -123,7 +125,7 @@ const textareaStyles = css`
   font-family: inherit;
 
   &:focus {
-    border-color: #1a1a1a;
+    border-color: #64483E;
   }
 `
 
@@ -131,15 +133,16 @@ const selectStyles = css`
   width: 100%;
   padding: 10px 12px;
   font-size: 14px;
-  border: 1px solid #e5e5e5;
+  border: 1px solid #E3E2E3;
   border-radius: 4px;
-  background-color: #ffffff;
+  background-color: #FFFDFE;
+  color: #4C4A48;
   outline: none;
   transition: border-color 0.2s ease-in-out;
   cursor: pointer;
 
   &:focus {
-    border-color: #1a1a1a;
+    border-color: #64483E;
   }
 `
 
@@ -159,11 +162,11 @@ const buttonPrimaryStyles = css`
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background-color: #1a1a1a;
-  color: #ffffff;
+  background-color: #64483E;
+  color: #FFFDFE;
 
   &:hover {
-    background-color: #333333;
+    background-color: #6F4E35;
   }
 `
 
@@ -178,8 +181,8 @@ const buttonPrimaryDisabledStyles = css`
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background-color: #9ca3af;
-  color: #ffffff;
+  background-color: #DED4D1;
+  color: #FFFDFE;
 `
 
 const buttonDefaultStyles = css`
@@ -193,11 +196,11 @@ const buttonDefaultStyles = css`
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background-color: #f5f5f5;
-  color: #1a1a1a;
+  background-color: #F0EAE5;
+  color: #4C4A48;
 
   &:hover {
-    background-color: #e5e5e5;
+    background-color: #DED4D1;
   }
 `
 
@@ -205,7 +208,7 @@ const buttonLightStyles = css`
   padding: 10px 20px;
   font-size: 14px;
   font-weight: 500;
-  border: 1px solid #e5e5e5;
+  border: 1px solid #E3E2E3;
   border-radius: 4px;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
@@ -213,10 +216,10 @@ const buttonLightStyles = css`
   align-items: center;
   gap: 8px;
   background-color: transparent;
-  color: #1a1a1a;
+  color: #4C4A48;
 
   &:hover {
-    background-color: #f5f5f5;
+    background-color: #F8F3F2;
   }
 `
 
@@ -239,7 +242,7 @@ const iconButtonStyles = css`
   border-radius: 4px;
   cursor: pointer;
   background-color: transparent;
-  color: #ef4444;
+  color: #b03b2e;;
   transition: all 0.2s ease-in-out;
   display: inline-flex;
   align-items: center;
@@ -267,8 +270,8 @@ const imagePreviewStyles = css`
 const imagePlaceholderStyles = css`
   width: 200px;
   height: 200px;
-  background-color: #f5f5f5;
-  border: 2px dashed #e5e5e5;
+  background-color: #F8F3F2;
+  border: 2px dashed #E3E2E3;
   border-radius: 8px;
   display: flex;
   align-items: center;
@@ -279,7 +282,7 @@ const imagePlaceholderStyles = css`
 
 const placeholderTextStyles = css`
   font-size: 14px;
-  color: #9ca3af;
+  color: #DED4D1;
 `
 
 const toggleGroupStyles = css`
@@ -298,30 +301,30 @@ const sectionHeaderStyles = css`
 const sectionTitleStyles = css`
   font-size: 14px;
   font-weight: 500;
-  color: #1a1a1a;
+  color: #4C4A48;
 `
-
 
 const variantTableStyles = css`
   width: 100%;
   border-collapse: collapse;
-  border: 1px solid #e5e5e5;
+  border: 1px solid #E3E2E3;
   border-radius: 6px;
   overflow: hidden;
 `
 
 const variantTableHeaderStyles = css`
-  background-color: #f5f5f5;
+  background-color: #F0EAE5;
   font-weight: 600;
   font-size: 14px;
   text-align: left;
   padding: 12px;
-  border-bottom: 1px solid #e5e5e5;
+  border-bottom: 1px solid #E3E2E3;
+  color: #4C4A48;
 `
 
 const variantTableCellStyles = css`
   padding: 12px;
-  border-bottom: 1px solid #f0f0f0;
+  border-bottom: 1px solid #E3E2E3;
   vertical-align: middle;
 `
 
@@ -331,7 +334,7 @@ const variantTableRowStyles = css`
   }
 
   &:hover {
-    background-color: #fafafa;
+    background-color: #F8F3F2;
   }
 `
 
@@ -339,14 +342,15 @@ const variantInputTableStyles = css`
   width: 100%;
   padding: 8px 10px;
   font-size: 14px;
-  border: 1px solid #e5e5e5;
+  border: 1px solid #E3E2E3;
   border-radius: 4px;
-  background-color: #ffffff;
+  background-color: #FFFDFE;
+  color: #4C4A48;
   outline: none;
   transition: border-color 0.2s ease-in-out;
 
   &:focus {
-    border-color: #1a1a1a;
+    border-color: #64483E;
   }
 `
 
@@ -355,15 +359,15 @@ const customOptionMetaStyles = css`
   flex-direction: column;
   gap: 16px;
   padding: 16px;
-  background-color: #ffffff;
-  border: 1px solid #e5e5e5;
+  background-color: #FFFDFE;
+  border: 1px solid #E3E2E3;
   border-radius: 6px;
   margin-bottom: 20px;
 `
 
 const choicesSectionStyles = css`
-  background-color: #ffffff;
-  border: 1px solid #e5e5e5;
+  background-color: #FFFDFE;
+  border: 1px solid #E3E2E3;
   border-radius: 6px;
   padding: 16px;
 `
@@ -374,13 +378,13 @@ const choicesSectionHeaderStyles = css`
   align-items: center;
   margin-bottom: 16px;
   padding-bottom: 12px;
-  border-bottom: 2px solid #e5e5e5;
+  border-bottom: 2px solid #E3E2E3;
 `
 
 const choicesSectionTitleStyles = css`
   font-size: 14px;
   font-weight: 600;
-  color: #1a1a1a;
+  color: #4C4A48;
   margin: 0;
 `
 
@@ -390,17 +394,18 @@ const choiceTableStyles = css`
 `
 
 const choiceTableHeaderStyles = css`
-  background-color: #f5f5f5;
+  background-color: #F0EAE5;
   font-weight: 600;
   font-size: 13px;
   text-align: left;
   padding: 10px 12px;
-  border-bottom: 1px solid #e5e5e5;
+  border-bottom: 1px solid #E3E2E3;
+  color: #4C4A48;
 `
 
 const choiceTableCellStyles = css`
   padding: 10px 12px;
-  border-bottom: 1px solid #f0f0f0;
+  border-bottom: 1px solid #E3E2E3;
   vertical-align: middle;
 `
 
@@ -410,7 +415,7 @@ const choiceTableRowStyles = css`
   }
 
   &:hover {
-    background-color: #fafafa;
+    background-color: #F8F3F2;
   }
 `
 
@@ -418,30 +423,31 @@ const choiceInputTableStyles = css`
   width: 100%;
   padding: 8px 10px;
   font-size: 14px;
-  border: 1px solid #e5e5e5;
+  border: 1px solid #E3E2E3;
   border-radius: 4px;
-  background-color: #ffffff;
+  background-color: #FFFDFE;
+  color: #4C4A48;
   outline: none;
   transition: border-color 0.2s ease-in-out;
 
   &:focus {
-    border-color: #1a1a1a;
+    border-color: #64483E;
   }
 `
 
 const priceDeltaHelpTextStyles = css`
   font-size: 11px;
-  color: #666666;
+  color: #4C4A48;
+  opacity: 0.7;
   margin-top: 4px;
 `
 
 const dividerStyles = css`
   height: 1px;
-  background-color: #e5e5e5;
+  background-color: #E3E2E3;
   border: none;
   margin: 24px 0;
 `
-
 
 const checkboxContainerStyles = css`
   display: flex;
@@ -457,7 +463,7 @@ const checkboxStyles = css`
 
 const checkboxLabelStyles = css`
   font-size: 14px;
-  color: #1a1a1a;
+  color: #4C4A48;
   cursor: pointer;
 `
 
@@ -476,9 +482,9 @@ const multiSelectDisplayStyles = css`
   min-height: 42px;
   padding: 10px 12px;
   font-size: 14px;
-  border: 1px solid #e5e5e5;
+  border: 1px solid #E3E2E3;
   border-radius: 4px;
-  background-color: #ffffff;
+  background-color: #FFFDFE;
   outline: none;
   transition: border-color 0.2s ease-in-out;
   display: flex;
@@ -488,13 +494,13 @@ const multiSelectDisplayStyles = css`
   cursor: pointer;
 
   &:focus {
-    border-color: #1a1a1a;
+    border-color: #64483E;
   }
 `
 
 const multiSelectTagStyles = css`
-  background-color: #1a1a1a;
-  color: #ffffff;
+  background-color: #64483E;
+  color: #FFFDFE;
   padding: 4px 8px;
   border-radius: 4px;
   font-size: 13px;
@@ -508,24 +514,25 @@ const multiSelectDropdownStyles = css`
   top: 100%;
   left: 0;
   right: 0;
-  background-color: #ffffff;
-  border: 1px solid #e5e5e5;
+  background-color: #FFFDFE;
+  border: 1px solid #E3E2E3;
   border-radius: 4px;
   margin-top: 4px;
   max-height: 200px;
   overflow-y: auto;
   z-index: 1000;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 6px rgba(100, 72, 62, 0.1);
 `
 
 const multiSelectOptionStyles = css`
   padding: 10px 12px;
   cursor: pointer;
   font-size: 14px;
+  color: #4C4A48;
   transition: background-color 0.15s ease-in-out;
 
   &:hover {
-    background-color: #f5f5f5;
+    background-color: #F8F3F2;
   }
 `
 
@@ -557,9 +564,10 @@ const fileInputButtonStyles = css`
   width: 100%;
   padding: 10px 12px;
   font-size: 14px;
-  border: 1px solid #e5e5e5;
+  border: 1px solid #E3E2E3;
   border-radius: 4px;
-  background-color: #fafafa;
+  background-color: #F8F3F2;
+  color: #4C4A48;
   outline: none;
   transition: border-color 0.2s ease-in-out;
   cursor: pointer;
@@ -568,13 +576,13 @@ const fileInputButtonStyles = css`
   gap: 8px;
 
   &:hover {
-    background-color: #f5f5f5;
+    background-color: #F0EAE5;
   }
 `
 
 const helpTextStyles = css`
   font-size: 12px;
-  color: #3b82f6;
+  color: #64483E;
   margin-top: 4px;
 `
 
@@ -585,44 +593,46 @@ const requiredStyles = css`
 const removeTagButtonStyles = css`
   background: none;
   border: none;
-  color: #ffffff;
+  color: #FFFDFE;
   cursor: pointer;
   padding: 0;
   font-size: 16px;
 `
 
 const multiSelectPlaceholderStyles = css`
-  color: #9ca3af;
+  color: #DED4D1;
 `
 
 const multiSelectOptionActiveStyles = css`
   padding: 10px 12px;
   cursor: pointer;
   font-size: 14px;
+  color: #4C4A48;
   transition: background-color 0.15s ease-in-out;
-  background-color: #f5f5f5;
+  background-color: #F0EAE5;
 
   &:hover {
-    background-color: #f5f5f5;
+    background-color: #F0EAE5;
   }
 `
 
 const emptyStateStyles = css`
-  color: #666666;
+  color: #4C4A48;
+  opacity: 0.7;
   text-align: center;
   margin-top: 16px;
 `
 
 const customOptionAccordionStyles = css`
-  border: 1px solid #e5e5e5;
+  border: 1px solid #E3E2E3;
   border-radius: 6px;
-  background-color: #ffffff;
+  background-color: #FFFDFE;
   overflow: hidden;
   transition: all 0.2s ease-in-out;
 
   &:hover {
-    border-color: #d1d5db;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    border-color: #DED4D1;
+    box-shadow: 0 2px 4px rgba(100, 72, 62, 0.05);
   }
 `
 
@@ -631,13 +641,13 @@ const customOptionAccordionHeaderStyles = css`
   justify-content: space-between;
   align-items: center;
   padding: 14px 18px;
-  background-color: #fafafa;
+  background-color: #F8F3F2;
   cursor: pointer;
   transition: background-color 0.2s ease-in-out;
-  border-bottom: 1px solid #e5e5e5;
+  border-bottom: 1px solid #E3E2E3;
 
   &:hover {
-    background-color: #f5f5f5;
+    background-color: #F0EAE5;
   }
 `
 
@@ -646,14 +656,14 @@ const customOptionAccordionHeaderExpandedStyles = css`
   justify-content: space-between;
   align-items: center;
   padding: 14px 18px;
-  background-color: #1a1a1a;
-  color: #ffffff;
+  background-color: #64483E;
+  color: #FFFDFE;
   cursor: pointer;
   transition: background-color 0.2s ease-in-out;
-  border-bottom: 1px solid #1a1a1a;
+  border-bottom: 1px solid #64483E;
 
   &:hover {
-    background-color: #2d2d2d;
+    background-color: #6F4E35;
   }
 `
 
@@ -667,20 +677,21 @@ const customOptionSummaryStyles = css`
 const customOptionLabelTextStyles = css`
   font-size: 15px;
   font-weight: 600;
-  color: #1a1a1a;
+  color: #4C4A48;
   margin: 0;
 `
 
 const customOptionLabelTextExpandedStyles = css`
   font-size: 15px;
   font-weight: 600;
-  color: #ffffff;
+  color: #FFFDFE;
   margin: 0;
 `
 
 const customOptionMetaTextStyles = css`
   font-size: 13px;
-  color: #666666;
+  color: #4C4A48;
+  opacity: 0.7;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -688,7 +699,7 @@ const customOptionMetaTextStyles = css`
 
 const customOptionMetaTextExpandedStyles = css`
   font-size: 13px;
-  color: #d1d5db;
+  color: #F0EAE5;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -699,7 +710,7 @@ const customOptionBadgeSmallStyles = css`
   align-items: center;
   padding: 2px 8px;
   background-color: #ef4444;
-  color: #ffffff;
+  color: #FFFDFE;
   font-size: 10px;
   font-weight: 600;
   border-radius: 3px;
@@ -719,14 +730,14 @@ const iconButtonAccordionStyles = css`
   border-radius: 4px;
   cursor: pointer;
   background-color: transparent;
-  color: #1a1a1a;
+  color: #b03b2e;;
   transition: all 0.2s ease-in-out;
   display: inline-flex;
   align-items: center;
   justify-content: center;
 
   &:hover {
-    background-color: #e5e5e5;
+    background-color: #DED4D1;
   }
 `
 
@@ -736,20 +747,20 @@ const iconButtonAccordionExpandedStyles = css`
   border-radius: 4px;
   cursor: pointer;
   background-color: transparent;
-  color: #ffffff;
+  color: #FFFDFE;
   transition: all 0.2s ease-in-out;
   display: inline-flex;
   align-items: center;
   justify-content: center;
 
   &:hover {
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: rgba(255, 253, 254, 0.1);
   }
 `
 
 const customOptionContentStyles = css`
   padding: 20px;
-  background-color: #fafafa;
+  background-color: #F8F3F2;
 `
 
 export default function ProductMultiStepForm({
@@ -1437,7 +1448,7 @@ export default function ProductMultiStepForm({
                       <div className={choicesSectionStyles}>
                         <div className={choicesSectionHeaderStyles}>
                           <h6 className={choicesSectionTitleStyles}>
-                            Available Choices for "{option.label || "this option"}"
+                            Available Choices for &quot;{option.label || "this option"}&quot;
                           </h6>
                           <button
                             className={`${buttonLightStyles} ${buttonSmallStyles}`}

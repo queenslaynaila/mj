@@ -1,15 +1,15 @@
-"use client"
+"use client";
 
-import type React from "react"
-import { css } from "@linaria/atomic"
-import { useState, useRef, useEffect } from "react"
-import { MdClose, MdExpandMore } from "react-icons/md"
-import { Allergen } from "@/types/allergens.types"
+import type React from "react";
+import { css } from "@linaria/atomic";
+import { useState, useRef, useEffect } from "react";
+import { MdClose, MdExpandMore } from "react-icons/md";
+import { Allergen } from "@/types/allergens.types";
 
 interface AllergenFilterProps {
-  allergens:Allergen[],
-  value: string[]
-  onChange: (value: string[]) => void
+  allergens: Allergen[];
+  value: string[];
+  onChange: (value: string[]) => void;
 }
 
 const filterButtonStyles = css`
@@ -19,22 +19,24 @@ const filterButtonStyles = css`
   gap: 8px;
   padding: 10px 12px;
   border-radius: 8px;
-  border: 1px solid #d4d4d4;
-  background: white;
+  border: 1px solid #d8cfc9;
+  background: #f8f3f2;
   font-size: 14px;
   cursor: pointer;
   transition: all 0.2s ease;
   min-width: 200px;
   flex-wrap: wrap;
+  
 
   &:hover {
-    border-color: #1a1a1a;
+    border-color: #b8a49c;
+    background-color: #f3e9e6;
   }
 
   &.open {
-    border-color: #1a1a1a;
+    border-color: #624944;
   }
-`
+`;
 
 const filterContentStyles = css`
   display: flex;
@@ -42,10 +44,10 @@ const filterContentStyles = css`
   gap: 8px;
   flex: 1;
   flex-wrap: wrap;
-`
+`;
 
 const placeholderStyles = css`
-  color: #999;
+  color: #a39b96;
 `
 
 const pillStyles = css`
@@ -53,13 +55,13 @@ const pillStyles = css`
   align-items: center;
   gap: 6px;
   padding: 4px 8px;
-  background-color: #f5f5f5;
+  background-color: #f7f7f7;
   border: 1px solid #e5e5e5;
   border-radius: 6px;
   font-size: 13px;
   font-weight: 500;
-  color: #1a1a1a;
-`
+  color: #2b2b2b;
+`;
 
 const pillCloseStyles = css`
   display: flex;
@@ -69,56 +71,56 @@ const pillCloseStyles = css`
   background: transparent;
   border: none;
   cursor: pointer;
-  color: #666;
+  color: #737373;
   transition: color 0.2s;
 
   &:hover {
-    color: #1a1a1a;
+    color: #2b2b2b;
   }
-`
+`;
 
 const dropdownIconStyles = css`
   display: flex;
   align-items: center;
-  color: #666;
+  color: #737373;
   margin-left: auto;
   transition: transform 0.2s;
 
   &.open {
     transform: rotate(180deg);
   }
-`
+`;
 
 const dropdownMenuStyles = css`
   position: absolute;
   top: calc(100% + 4px);
   left: 0;
   right: 0;
-  background: white;
-  border: 1px solid #d4d4d4;
+  background: #ffffff;
+  border: 1px solid #e5e5e5;
   border-radius: 8px;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
   max-height: 300px;
   overflow-y: auto;
   z-index: 100;
-`
+`;
 
 const dropdownItemStyles = css`
   padding: 10px 12px;
   cursor: pointer;
   font-size: 14px;
-  transition: background-color 0.15s;
+  transition: background-color 0.15s, color 0.15s;
   display: flex;
   align-items: center;
   gap: 8px;
 
   &:hover {
-    background-color: #f5f5f5;
+    background-color: #f9f9f9;
   }
 
   &.selected {
-    background-color: #1a1a1a;
-    color: white;
+    background-color: #2b2b2b;
+    color: #ffffff;
     font-weight: 500;
   }
 
@@ -129,7 +131,7 @@ const dropdownItemStyles = css`
   &:last-child {
     border-radius: 0 0 8px 8px;
   }
-`
+`;
 
 const checkboxStyles = css`
   width: 16px;
@@ -139,50 +141,54 @@ const checkboxStyles = css`
   display: flex;
   align-items: center;
   justify-content: center;
-  background: white;
+  background: #ffffff;
   transition: all 0.2s;
 
   &.checked {
-    background: #1a1a1a;
-    border-color: #1a1a1a;
+    background: #2b2b2b;
+    border-color: #2b2b2b;
   }
-`
+`;
 
 const checkmarkStyles = css`
-  color: white;
+  color: #ffffff;
   font-size: 12px;
   font-weight: bold;
-`
+`;
 
-export default function AllergenFilter({ allergens, value, onChange }: AllergenFilterProps) {
-  const [isOpen, setIsOpen] = useState(false)
-  const containerRef = useRef<HTMLDivElement>(null)
+export default function AllergenFilter({
+  allergens,
+  value,
+  onChange,
+}: AllergenFilterProps) {
+  const [isOpen, setIsOpen] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
-        setIsOpen(false)
+        setIsOpen(false);
       }
-    }
+    };
 
-    document.addEventListener("mousedown", handleClickOutside)
-    return () => document.removeEventListener("mousedown", handleClickOutside)
-  }, [])
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
-  const selectedAllergens = allergens.filter((allergen) => value.includes(String(allergen.id)))
+  const selectedAllergens = allergens.filter((a) => value.includes(String(a.id)));
 
-  const handleRemove = (allergenId: string, e: React.MouseEvent) => {
-    e.stopPropagation()
-    onChange(value.filter((id) => id !== allergenId))
-  }
+  const handleRemove = (id: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    onChange(value.filter((v) => v !== id));
+  };
 
-  const handleToggle = (allergenId: string) => {
-    if (value.includes(allergenId)) {
-      onChange(value.filter((id) => id !== allergenId))
+  const handleToggle = (id: string) => {
+    if (value.includes(id)) {
+      onChange(value.filter((v) => v !== id));
     } else {
-      onChange([...value, allergenId])
+      onChange([...value, id]);
     }
-  }
+  };
 
   return (
     <div ref={containerRef} style={{ position: "relative", flex: 1 }}>
@@ -191,13 +197,13 @@ export default function AllergenFilter({ allergens, value, onChange }: AllergenF
           {selectedAllergens.length === 0 ? (
             <span className={placeholderStyles}>Filter by allergens</span>
           ) : (
-            selectedAllergens.map((allergen) => (
-              <div key={allergen.id} className={pillStyles}>
-                {allergen.name}
+            selectedAllergens.map((a) => (
+              <div key={a.id} className={pillStyles}>
+                {a.name}
                 <button
                   className={pillCloseStyles}
-                  onClick={(e) => handleRemove(String(allergen.id), e)}
-                  aria-label={`Remove ${allergen.name}`}
+                  onClick={(e) => handleRemove(String(a.id), e)}
+                  aria-label={`Remove ${a.name}`}
                 >
                   <MdClose size={14} />
                 </button>
@@ -212,23 +218,23 @@ export default function AllergenFilter({ allergens, value, onChange }: AllergenF
 
       {isOpen && (
         <div className={dropdownMenuStyles}>
-          {allergens.map((allergen) => {
-            const isSelected = value.includes(String(allergen.id))
+          {allergens.map((a) => {
+            const isSelected = value.includes(String(a.id));
             return (
               <div
-                key={allergen.id}
+                key={a.id}
                 className={`${dropdownItemStyles} ${isSelected ? "selected" : ""}`}
-                onClick={() => handleToggle(String(allergen.id))}
+                onClick={() => handleToggle(String(a.id))}
               >
                 <div className={`${checkboxStyles} ${isSelected ? "checked" : ""}`}>
                   {isSelected && <span className={checkmarkStyles}>✓</span>}
                 </div>
-                {allergen.name}
+                {a.name}
               </div>
-            )
+            );
           })}
         </div>
       )}
     </div>
-  )
+  );
 }

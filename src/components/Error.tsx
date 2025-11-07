@@ -4,8 +4,8 @@ const errorContainerStyles = css`
   max-width: 1400px;
   margin: 0 auto;
   padding: 2rem;
-  background-color: #fef2f2;
-  border: 2px solid #fecaca;
+  background-color: #f8f3f2; 
+  border: 1.5px solid #d6b4ab; 
   border-radius: 0.75rem;
   text-align: center;
 `;
@@ -13,13 +13,13 @@ const errorContainerStyles = css`
 const errorTitleStyles = css`
   font-size: 1.5rem;
   font-weight: 600;
-  color: #991b1b;
+  color: #64483e; 
   margin-bottom: 0.5rem;
 `;
 
 const errorMessageStyles = css`
   font-size: 1rem;
-  color: #7f1d1d;
+  color: #7a7471;  
 `;
 
 type ErrorMessageProps = {

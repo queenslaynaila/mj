@@ -10,7 +10,7 @@ import { FlexCenterStyles, FlexColumnStyles } from "@/styles/commonStyles"
 const containerStyles = css`
   min-height: 100vh;
   justify-content: center;
-  background-color: #f6f1f1ff;
+  background-color: #F8F3F2;
   padding: 2rem 1rem;
 `
 
@@ -19,9 +19,9 @@ const cardStyles = css`
   max-width: 26rem;
   padding: 3rem 2rem;
   gap: 2rem;
-  background-color: #ffffff;
+  background-color: #FFFDFE;
   border-radius: 0.5rem;
-  border: 2px solid #e5e7eb;
+  border: 2px solid #E3E2E3;
   position: relative;
 `
 
@@ -30,7 +30,7 @@ const brandingStyles = css`
   top: 1.5rem;
   right: 2rem;
   font-size: 1rem;
-  color: #1a1a1a;
+  color: #4C4A48;
   font-weight: 500;
   line-height: 1.2;
   text-align: right;
@@ -45,14 +45,14 @@ const headerStyles = css`
 const titleStyles = css`
   font-size: 2.5rem;
   font-weight: 700;
-  color: #1a1a1a;
+  color: #4C4A48;
   margin: 0;
   line-height: 1.2;
 `
 
 const subtitleStyles = css`
   font-size: 0.875rem;
-  color: #9ca3af;
+  color: #DED4D1;
   margin: 0;
   line-height: 1.5;
 `
@@ -68,21 +68,21 @@ const fieldStyles = css`
 const inputStyles = css`
   width: 100%;
   border: none;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid #E3E2E3;
   background-color: transparent;
   padding: 0.75rem 0;
   font-size: 0.875rem;
-  color: #1a1a1a;
+  color: #4C4A48;
   transition: border-color 0.2s;
   font-family: inherit;
   
   &::placeholder {
-    color: #d1d5db;
+    color: #DED4D1;
   }
   
   &:focus {
     outline: none;
-    border-bottom-color: #1a1a1a;
+    border-bottom-color: #64483E;
   }
 `
 
@@ -93,21 +93,21 @@ const passwordContainerStyles = css`
 const passwordInputStyles = css`
   width: 100%;
   border: none;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid #E3E2E3;
   background-color: transparent;
   padding: 0.75rem 2.5rem 0.75rem 0;
   font-size: 0.875rem;
-  color: #1a1a1a;
+  color: #4C4A48;
   transition: border-color 0.2s;
   font-family: inherit;
   
   &::placeholder {
-    color: #d1d5db;
+    color: #DED4D1;
   }
   
   &:focus {
     outline: none;
-    border-bottom-color: #1a1a1a;
+    border-bottom-color: #64483E;
   }
 `
 
@@ -120,15 +120,15 @@ const passwordToggleStyles = css`
   cursor: pointer;
   padding: 0.25rem;
   justify-content: center;
-  color: #9ca3af;
+  color: #DED4D1;
   transition: color 0.2s;
   
   &:hover {
-    color: #1a1a1a;
+    color: #64483E;
   }
 
   &:focus-visible {
-    outline: 2px solid #1a1a1a;
+    outline: 2px solid #64483E;
     outline-offset: 2px;
     border-radius: 0.25rem;
   }
@@ -149,7 +149,7 @@ const submitButtonStyles = css`
   justify-content: center;
   border-radius: 0.375rem;
   border: none;
-  background-color: #2c2c2c;
+  background-color: #64483E;
   color: white;
   cursor: pointer;
   transition: background-color 0.2s;
@@ -157,11 +157,11 @@ const submitButtonStyles = css`
   margin-top: 0.5rem;
   
   &:hover {
-    background-color: #1a1a1a;
+    background-color: #6F4E35;
   }
 
   &:focus-visible {
-    outline: 2px solid #1a1a1a;
+    outline: 2px solid #64483E;
     outline-offset: 2px;
   }
 
@@ -174,13 +174,13 @@ const submitButtonStyles = css`
 const footerStyles = css`
   text-align: center;
   font-size: 0.875rem;
-  color: #6b7280;
+  color: #4C4A48;
   margin: 0;
 `
 
 const linkStyles = css`
   font-weight: 500;
-  color: #1a1a1a;
+  color: #64483E;
   transition: all 0.2s;
   background: none;
   border: none;
@@ -194,7 +194,7 @@ const linkStyles = css`
   }
 
   &:focus-visible {
-    outline: 2px solid #1a1a1a;
+    outline: 2px solid #64483E;
     outline-offset: 2px;
     border-radius: 0.125rem;
   }
@@ -217,17 +217,17 @@ const dividerStyles = css`
     left: 0;
     right: 0;
     height: 1px;
-    background-color: #e5e7eb;
+    background-color: #E3E2E3;
   }
 `
 
 const dividerTextStyles = css`
   position: relative;
   display: inline-block;
-  background-color: #ffffff;
+  background-color: #FFFDFE;
   padding: 0 1rem;
   font-size: 0.875rem;
-  color: #9ca3af;
+  color: #DED4D1;
 `
 
 const socialButtonStyles = css`
@@ -240,20 +240,20 @@ const socialButtonStyles = css`
   justify-content: center;
   gap: 0.75rem;
   border-radius: 0.375rem;
-  border: 1px solid #e5e7eb;
-  background-color: #ffffff;
-  color: #1a1a1a;
+  border: 1px solid #E3E2E3;
+  background-color: #FFFDFE;
+  color: #4C4A48;
   cursor: pointer;
   transition: all 0.2s;
   font-family: inherit;
   
   &:hover {
-    background-color: #f9fafb;
-    border-color: #d1d5db;
+    background-color: #F0EAE5;
+    border-color: #DED4D1;
   }
 
   &:focus-visible {
-    outline: 2px solid #1a1a1a;
+    outline: 2px solid #64483E;
     outline-offset: 2px;
   }
 `
@@ -268,10 +268,10 @@ export default function SignInPage() {
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
   const [showPassword, setShowPassword] = useState(false)
- 
+
   const handleSignIn = (e: React.FormEvent) => {
     e.preventDefault()
-    console.log("Sign in with:", { username, password})
+    console.log("Sign in with:", { username, password })
     router.push("/admin/menu")
   }
   const handleNavigateToAdmin = () => {
@@ -279,8 +279,8 @@ export default function SignInPage() {
   }
 
   return (
-    <div className={cx(FlexCenterStyles,containerStyles)}>
-      <div className={cx(cardStyles,FlexColumnStyles)}>
+    <div className={cx(FlexCenterStyles, containerStyles)}>
+      <div className={cx(cardStyles, FlexColumnStyles)}>
         <div className={brandingStyles}>M.J. O&apos;Connor&apos;s</div>
 
         <div className={cx(headerStyles, FlexColumnStyles)}>
@@ -288,8 +288,8 @@ export default function SignInPage() {
           <p className={subtitleStyles}>Please enter your data</p>
         </div>
 
-        <form onSubmit={handleSignIn} className={cx(FlexColumnStyles,formStyles)}>
-          <div className={cx(FlexColumnStyles,fieldStyles)}>
+        <form onSubmit={handleSignIn} className={cx(FlexColumnStyles, formStyles)}>
+          <div className={cx(FlexColumnStyles, fieldStyles)}>
             <input
               id="username"
               type="text"
@@ -302,7 +302,7 @@ export default function SignInPage() {
           </div>
 
           <div className={fieldStyles}>
-            <div className={cx(FlexCenterStyles,passwordContainerStyles)}>
+            <div className={cx(FlexCenterStyles, passwordContainerStyles)}>
               <input
                 id="password"
                 type={showPassword ? "text" : "password"}
@@ -314,7 +314,7 @@ export default function SignInPage() {
               />
               <button
                 type="button"
-                className={cx(FlexCenterStyles,passwordToggleStyles)}
+                className={cx(FlexCenterStyles, passwordToggleStyles)}
                 onClick={() => setShowPassword(!showPassword)}
                 aria-label={showPassword ? "Hide password" : "Show password"}
               >
@@ -332,7 +332,7 @@ export default function SignInPage() {
           <span className={dividerTextStyles}>Or continue with</span>
         </div>
 
-        <div className={cx(FlexColumnStyles,socialButtonsContainerStyles)}>
+        <div className={cx(FlexColumnStyles, socialButtonsContainerStyles)}>
           <button type="button" className={socialButtonStyles} onClick={handleNavigateToAdmin}>
             <FaGoogle className={socialIconStyles} />
             Continue with Google

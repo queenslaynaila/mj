@@ -1,32 +1,37 @@
 "use client"
 
-import React, { useState } from "react";
-import { css, cx } from "@linaria/atomic";
-import { IoMenuOutline } from "react-icons/io5";
-import Sidebar from "./Sidebar";
-import { mqMax } from "@/styles/breakpoints";
-import { 
-  FlexBetweenCenterStyles, 
-  FlexCenterStyles, 
-  FlexColumnStyles 
-} from "@/styles/commonStyles";
-import { 
-  BG_CARD_COLOR, 
-  BORDER_COLOR, 
-  SHADOW_MEDIUM, 
-  TEXT_PRIMARY 
-} from "@/styles/colors";
+import type React from "react"
+import { useState } from "react"
+import { css, cx } from "@linaria/atomic"
+import { IoMenuOutline } from "react-icons/io5"
+import Sidebar from "./Sidebar"
+
+const FlexBetweenCenterStyles = css`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`
+
+const FlexCenterStyles = css`
+  display: flex;
+  align-items: center;
+`
+
+const FlexColumnStyles = css`
+  display: flex;
+  flex-direction: column;
+`
 
 const layoutContainerStyles = css`
   min-height: 100vh;
-  background-color: #F9FAFB;
+  background-color: #F8F3F2;
 `
 
 const dashheaderStyles = css`
   padding: 0 1.5rem;
   height: 4rem;
-  border-bottom: 1px solid #E5E7EB;
-  background-color: #fff;
+  border-bottom: 1px solid #E3E2E3;
+  background-color: #FFFDFE;
 `
 
 const menuButtonStyles = css`
@@ -35,10 +40,13 @@ const menuButtonStyles = css`
   cursor: pointer;
   display: none;
   padding: 0;
-  color: #111827;
+  color: #4C4A48;
+  font-size: 24px;
   
-  ${mqMax[1]} {
+  @media (max-width: 768px) {
     display: flex;
+    align-items: center;
+    justify-content: center;
   }
 `
 
@@ -47,7 +55,7 @@ const headerTitleStyles = css`
   font-weight: 600;
   margin: 0;
   line-height: 24px;
-
+  color: #4C4A48;
 `
 
 const mainContentStyles = css`
@@ -58,27 +66,53 @@ const mainContentStyles = css`
 
 const sidebarWrapperStyles = css`
   width: 15rem;
+  flex-shrink: 0;
   
-  ${mqMax[1]} {
+  @media (max-width: 768px) {
     position: fixed;
     top: 4rem;
-    left: -15rem;
+    left: 0;
     height: calc(100vh - 4rem);
     z-index: 50;
-    transition: left 0.3s ease;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
   }
 `
 
 const sidebarVisibleStyles = css`
-  left: 0;
+  @media (max-width: 768px) {
+    transform: translateX(0) !important;
+  }
 `
 
 const pageContentStyles = css`
   flex: 1;
   overflow-y: auto;
   
-  ${mqMax[1]} {
+  @media (max-width: 768px) {
     width: 100%;
+  }
+`
+
+const overlayStyles = css`
+  display: none;
+  
+  @media (max-width: 768px) {
+    display: none;
+  }
+`
+
+const overlayVisibleStyles = css`
+  @media (max-width: 768px) {
+    display: block !important;
+    position: fixed;
+    top: 4rem;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 40;
   }
 `
 
@@ -92,17 +126,27 @@ const avatarStyles = css`
   width: 2.5rem;
   height: 2.5rem;
   justify-content: center;
-  border:none;
+  border: none;
+  background-color: #64483E;
+  color: #FFFDFE;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  &:hover {
+    background-color: #4C4A48;
+  }
 `
 
 const dropdownMenuStyles = css`
   position: absolute;
   top: calc(100% + 0.5rem); 
   right: 0;
-  background-color: ${BG_CARD_COLOR};
-  border: 1px solid ${BORDER_COLOR};
+  background-color: #FFFDFE;
+  border: 1px solid #E3E2E3;
   border-radius: 0.5rem;
-  box-shadow: ${SHADOW_MEDIUM};
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   min-width: 7.5rem;
   z-index: 50; 
   overflow: hidden;
@@ -117,47 +161,50 @@ const dropdownMenuItemStyles = css`
   border: none;
   cursor: pointer;
   font-size: 0.95rem;
-  color: ${TEXT_PRIMARY};
+  color: #4C4A48;
   transition: background-color 0.2s ease;
   
   &:hover {
-    background-color: #f8f9fa;
+    background-color: #F0EAE5;
   }
 `
 
 type LayoutProps = {
-  children: React.ReactNode;
+  children: React.ReactNode
 }
 
 const DashboardLayout: React.FC<LayoutProps> = ({ children }) => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false)
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false)
 
   const handleSignOut = (e: React.MouseEvent) => {
-    e.preventDefault();
-    setIsDropdownOpen(false);
+    e.preventDefault()
+    setIsDropdownOpen(false)
+  }
 
-    
-  };
+  const handleToggleDropdown = () => setIsDropdownOpen((open) => !open)
 
-  const handleToggleDropdown = () => setIsDropdownOpen((open) => !open);
+  const handleOverlayClick = () => setIsSidebarOpen(false)
+
+  const handleToggleSidebar = () => {
+    setIsSidebarOpen((open) => {
+      console.log("[v0] Toggling sidebar from", open, "to", !open)
+      return !open
+    })
+  }
 
   return (
     <div className={cx(layoutContainerStyles, FlexColumnStyles)}>
       <header className={cx(dashheaderStyles, FlexBetweenCenterStyles)}>
         <div className={FlexCenterStyles} style={{ gap: "0.5rem" }}>
-          <button
-            className={menuButtonStyles}
-            onClick={() => setIsSidebarOpen((open) => !open)}
-            aria-label="Toggle menu"
-          >
+          <button className={menuButtonStyles} onClick={handleToggleSidebar} aria-label="Toggle menu">
             <IoMenuOutline size={24} />
           </button>
           <h2 className={headerTitleStyles}>M.J. O&apos;Connor&apos;s</h2>
         </div>
         <div className={avatarContainerStyles}>
           <button className={avatarStyles} onClick={handleToggleDropdown}>
-            {("MJC").slice(0, 2).toUpperCase()}
+            {"MJC".slice(0, 2).toUpperCase()}
           </button>
           {isDropdownOpen && (
             <div className={dropdownMenuStyles}>
@@ -170,13 +217,15 @@ const DashboardLayout: React.FC<LayoutProps> = ({ children }) => {
       </header>
 
       <div className={mainContentStyles}>
+        <div className={cx(overlayStyles, isSidebarOpen && overlayVisibleStyles)} onClick={handleOverlayClick} />
+
         <div className={cx(sidebarWrapperStyles, isSidebarOpen && sidebarVisibleStyles)}>
           <Sidebar />
         </div>
         <main className={pageContentStyles}>{children}</main>
       </div>
     </div>
-  );
+  )
 }
 
-export default DashboardLayout;
+export default DashboardLayout

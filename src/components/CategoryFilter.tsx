@@ -7,7 +7,7 @@ import { MdClose, MdExpandMore } from "react-icons/md"
 import { Category } from "@/types/categories.types"
 
 interface CategoryFilterProps {
-  categories: Category[],
+  categories: Category[]
   value: string | null
   onChange: (value: string | null) => void
 }
@@ -19,8 +19,8 @@ const filterButtonStyles = css`
   gap: 8px;
   padding: 10px 12px;
   border-radius: 8px;
-  border: 1px solid #d4d4d4;
-  background: white;
+  border: 1px solid #d8cfc9;
+  background: #f8f3f2;
   font-size: 14px;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -28,11 +28,12 @@ const filterButtonStyles = css`
   justify-content: space-between;
 
   &:hover {
-    border-color: #1a1a1a;
+    border-color: #b8a49c;
+    background-color: #f3e9e6;
   }
 
   &.open {
-    border-color: #1a1a1a;
+    border-color: #624944;
   }
 `
 
@@ -44,11 +45,11 @@ const filterLabelStyles = css`
 `
 
 const placeholderStyles = css`
-  color: #999;
+  color: #a39b96;
 `
 
 const selectedValueStyles = css`
-  color: #1a1a1a;
+  color:red;
   font-weight: 500;
 `
 
@@ -60,22 +61,23 @@ const clearButtonStyles = css`
   background: transparent;
   border: none;
   cursor: pointer;
-  color: #666;
+  color: #937066;
   transition: color 0.2s;
 
   &:hover {
-    color: #1a1a1a;
+    color: #624944;
   }
 `
 
 const dropdownIconStyles = css`
   display: flex;
   align-items: center;
-  color: #666;
-  transition: transform 0.2s;
+  color: #937066;
+  transition: transform 0.2s, color 0.2s;
 
   &.open {
     transform: rotate(180deg);
+    color: #624944;
   }
 `
 
@@ -84,10 +86,10 @@ const dropdownMenuStyles = css`
   top: calc(100% + 4px);
   left: 0;
   right: 0;
-  background: white;
-  border: 1px solid #d4d4d4;
+  background: #fffdfc;
+  border: 1px solid #e2d9d5;
   border-radius: 8px;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 10px rgba(98, 73, 65, 0.15);
   max-height: 300px;
   overflow-y: auto;
   z-index: 100;
@@ -97,15 +99,17 @@ const dropdownItemStyles = css`
   padding: 10px 12px;
   cursor: pointer;
   font-size: 14px;
-  transition: background-color 0.15s;
+  color: #4c4a48;
+  transition: background-color 0.15s, color 0.15s;
 
   &:hover {
-    background-color: #f5f5f5;
+    background-color: #f8f3f2;
+    color: #1f1e1d;
   }
 
   &.selected {
-    background-color: #1a1a1a;
-    color: white;
+    background-color: #624944;
+    color: #ffffff;
     font-weight: 500;
   }
 

@@ -1,20 +1,21 @@
 "use client"
 
-import type { ComponentType, ReactElement } from "react";
-import { css, cx } from "@linaria/atomic";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { FaAllergies } from "react-icons/fa";
-import { MdCategory } from "react-icons/md";
-import { MdOutlineMenuBook } from "react-icons/md";
-import { IoIosStats } from "react-icons/io";
+import type { ComponentType, ReactElement } from "react"
+import { css, cx } from "@linaria/atomic"
+import Link from "next/link"
+import { usePathname } from "next/navigation"
+import { FaAllergies } from "react-icons/fa"
+import { MdCategory } from "react-icons/md"
+import { MdOutlineMenuBook } from "react-icons/md"
+import { IoIosStats } from "react-icons/io"
 
 const sidebarContainerStyles = css`
-  width: 240px;
-  background-color: #fff;
-  border-right: 1px solid #E5E7EB;
-  padding: 16px 0;
+  width: 100%;
   height: 100%;
+  background-color: #F0EAE5;
+  border-right: 1px solid #E3E2E3;
+  padding: 16px 0;
+  overflow-y: auto;
 `
 
 const navListStyles = css`
@@ -29,8 +30,13 @@ const navItemStyles = css`
 
 const activeNavItemStyles = css`
   a {
-    background-color: #F3F4F6;
+    background-color: #FFFDFE;
     font-weight: 500;
+    color: #64483E;
+    
+    svg {
+      color: #64483E;
+    }
   }
 `
 
@@ -39,49 +45,44 @@ const navLinkStyles = css`
   align-items: center;
   gap: 12px;
   padding: 12px 16px;
-  color: #111827;
+  color: #4C4A48;
   text-decoration: none;
   border-radius: 6px;
   margin: 0 8px;
+  transition: background-color 0.2s ease;
   
   &:hover {
-    background-color: #F3F4F6;
+    background-color: #DED4D1;
   }
   
   svg {
-    color: #6B7280;
+    color: #64483E;
   }
 `
 
 type SidebarNavItem = {
-  href: string;
-  label: string;
-  icon: ComponentType<{ size?: number }>;
-};
+  href: string
+  label: string
+  icon: ComponentType<{ size?: number }>
+}
 
 const sidebarNavItems: SidebarNavItem[] = [
   { href: "/admin/categories", label: "Categories", icon: MdCategory },
   { href: "/admin/allergens", label: "Allergens", icon: FaAllergies },
-  { href: "/admin/menu", label: "Menu", icon: MdOutlineMenuBook},
-  { href: "/admin/orders", label:"Orders", icon: IoIosStats }
-];
+  { href: "/admin/menu", label: "Menu", icon: MdOutlineMenuBook },
+  { href: "/admin/orders", label: "Orders", icon: IoIosStats },
+]
 
 const Sidebar = (): ReactElement => {
-  const pathname = usePathname() || "/";
+  const pathname = usePathname() || "/"
 
-  const isNavItemActive = (path: string) => pathname === path || pathname.startsWith(path + "/");
+  const isNavItemActive = (path: string) => pathname === path || pathname.startsWith(path + "/")
 
   return (
     <aside className={sidebarContainerStyles}>
       <ul className={navListStyles}>
         {sidebarNavItems.map((item) => (
-          <li
-            key={item.href}
-            className={cx(
-              navItemStyles,
-              isNavItemActive(item.href) && activeNavItemStyles
-            )}
-          >
+          <li key={item.href} className={cx(navItemStyles, isNavItemActive(item.href) && activeNavItemStyles)}>
             <Link href={item.href} className={navLinkStyles}>
               <item.icon size={20} />
               <span>{item.label}</span>
@@ -90,7 +91,7 @@ const Sidebar = (): ReactElement => {
         ))}
       </ul>
     </aside>
-  );
-};
+  )
+}
 
-export default Sidebar;
+export default Sidebar

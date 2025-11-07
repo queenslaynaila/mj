@@ -99,7 +99,7 @@ export default function Allergies() {
             onCreate={handleCreate as (item: Partial<Allergen>) => void}
             searchKeys={["name"]}
             formFields={formFields}
-            searchPlaceholder="Search Allergens by name."
+            searchPlaceholder="Search by name."
             paginated={true}
             itemsPerPage={10}
             deleteConfirmMessage="Are you sure you want to delete this allergen? This action cannot be undone."

@@ -1,5 +1,6 @@
 "use client"
 import ErrorMessage from "@/components/Error"
+import Header from "@/components/Header"
 import Loader from "@/components/Loader"
 import { useOrders, useUpdateOrder } from "@/hooks/useOrder"
 import { mqMin } from "@/styles/breakpoints"
@@ -16,27 +17,6 @@ const containerStyles = css`
   }
 `
 
-const headerStyles = css`
-  max-width: 1400px;
-  margin: 0 auto 2rem;
-  background: linear-gradient(135deg, #059669 0%, #047857 100%);
-  padding: 2rem;
-  border-radius: 1rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-`
-
-const titleStyles = css`
-  font-size: 2rem;
-  font-weight: 700;
-  color: #ffffff;
-  margin-bottom: 0.5rem;
-`
-
-const subtitleStyles = css`
-  font-size: 1rem;
-  color: #d1fae5;
-`
-
 const searchContainerStyles = css`
   max-width: 1400px;
   margin: 0 auto 2rem;
@@ -48,36 +28,34 @@ const searchIconStyles = css`
   left: 1rem;
   top: 50%;
   transform: translateY(-50%);
-  color: #059669;
+  color: #64483E;
   font-size: 1.25rem;
 `
 
 const searchInputStyles = css`
   width: 100%;
-  padding: 0.875rem 1rem 0.875rem 3rem;
-  border: 2px solid #d1fae5;
-  border-radius: 0.5rem;
+   padding: 10px 12px 10px 40px;
+  border: 1px solid #E3E2E3;
+  border-radius: 6px;
   font-size: 1rem;
-  color: #111827;
-  background-color: #ffffff;
+  color: #4C4A48;
+  background-color: #F8F3F2;
   transition: all 0.2s;
 
   &:focus {
-    outline: none;
-    border-color: #059669;
-    box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.1);
+    border-color: #64483E;
   }
 
   &::placeholder {
-    color: #9ca3af;
+    color: #DED4D1;
   }
 `
 
 const tableContainerStyles = css`
   max-width: 1400px;
   margin: 0 auto;
-  background-color: #ffffff;
-  border: 2px solid #e5e7eb;
+  background-color: #FFFDFE;
+  border: 2px solid #E3E2E3;
   border-radius: 0.75rem;
   overflow: hidden;
 `
@@ -88,8 +66,8 @@ const tableStyles = css`
 `
 
 const tableHeaderStyles = css`
-  background: linear-gradient(135deg, #ecfdf5 0%, #f9fafb 100%);
-  border-bottom: 2px solid #d1fae5;
+  background: linear-gradient(135deg, #F8F3F2 0%, #F0EAE5 100%);
+  border-bottom: 2px solid #DED4D1;
 `
 
 const thStyles = css`
@@ -97,20 +75,20 @@ const thStyles = css`
   text-align: left;
   font-size: 0.875rem;
   font-weight: 600;
-  color: #047857;
+  color: #4C4A48;
   white-space: nowrap;
 `
 
 const tbodyStyles = css`
-  background-color: #ffffff;
+  background-color: #FFFDFE;
 `
 
 const trStyles = css`
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid #E3E2E3;
   transition: background-color 0.15s;
 
   &:hover {
-    background-color: #f0fdf4;
+    background-color: #F8F3F2;
   }
 
   &:last-child {
@@ -121,7 +99,7 @@ const trStyles = css`
 const tdStyles = css`
   padding: 1rem;
   font-size: 0.875rem;
-  color: #374151;
+  color: #4C4A48;
   vertical-align: middle;
 `
 
@@ -130,14 +108,14 @@ const expandButtonStyles = css`
   border: none;
   cursor: pointer;
   padding: 0.5rem;
-  color: #6b7280;
+  color: #DED4D1;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: color 0.15s;
 
   &:hover {
-    color: #059669;
+    color: #64483E;
   }
 `
 
@@ -149,12 +127,12 @@ const customerCellStyles = css`
 
 const customerNameStyles = css`
   font-weight: 500;
-  color: #111827;
+  color: #4C4A48;
 `
 
 const customerContactStyles = css`
   font-size: 0.75rem;
-  color: #6b7280;
+  color: #DED4D1;
 `
 
 const statusCellStyles = css`
@@ -176,7 +154,7 @@ const statusBadgeStyles = css`
 
 const collectedTimeStyles = css`
   font-size: 0.75rem;
-  color: #6b7280;
+  color: #DED4D1;
   display: flex;
   align-items: center;
   gap: 0.375rem;
@@ -184,39 +162,39 @@ const collectedTimeStyles = css`
 
 const itemsCountStyles = css`
   font-weight: 500;
-  color: #6b7280;
+  color: #4C4A48;
 `
 
 const totalStyles = css`
   font-weight: 600;
-  color: #111827;
+  color: #4C4A48;
   white-space: nowrap;
 `
 
 const statusSelectStyles = css`
   padding: 0.5rem 0.75rem;
-  border: 1.5px solid #e5e7eb;
+  border: 1.5px solid #E3E2E3;
   border-radius: 0.375rem;
   font-size: 0.875rem;
   font-weight: 500;
-  color: #111827;
-  background-color: #ffffff;
+  color: #4C4A48;
+  background-color: #FFFDFE;
   cursor: pointer;
   transition: all 0.15s;
   min-width: 160px;
 
   &:hover {
-    border-color: #059669;
+    border-color: #64483E;
   }
 
   &:focus {
     outline: none;
-    border-color: #059669;
-    box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.1);
+    border-color: #64483E;
+    box-shadow: 0 0 0 3px rgba(100, 72, 62, 0.1);
   }
 
   &:disabled {
-    background-color: #f3f4f6;
+    background-color: #F0EAE5;
     cursor: not-allowed;
     opacity: 0.6;
   }
@@ -224,13 +202,13 @@ const statusSelectStyles = css`
 
 const disabledStatusTextStyles = css`
   font-size: 0.875rem;
-  color: #6b7280;
+  color: #DED4D1;
   font-style: italic;
 `
 
 const expandedRowStyles = css`
-  background-color: #f9fafb;
-  border-bottom: 1px solid #e5e7eb;
+  background-color: #F8F3F2;
+  border-bottom: 1px solid #E3E2E3;
 `
 
 const expandedContentStyles = css`
@@ -240,7 +218,7 @@ const expandedContentStyles = css`
 const expandedTitleStyles = css`
   font-size: 0.875rem;
   font-weight: 600;
-  color: #374151;
+  color: #4C4A48;
   margin-bottom: 1rem;
 `
 
@@ -255,14 +233,14 @@ const itemRowStyles = css`
   justify-content: space-between;
   align-items: flex-start;
   padding: 0.75rem;
-  background-color: #ffffff;
-  border: 1px solid #e5e7eb;
+  background-color: #FFFDFE;
+  border: 1px solid #E3E2E3;
   border-radius: 0.5rem;
 `
 
 const itemNameStyles = css`
   font-weight: 500;
-  color: #111827;
+  color: #4C4A48;
   margin-bottom: 0.25rem;
 `
 
@@ -281,16 +259,16 @@ const itemDetailRowStyles = css`
 
 const itemDetailLabelStyles = css`
   font-weight: 600;
-  color: #374151;
+  color: #4C4A48;
 `
 
 const itemDetailValueStyles = css`
-  color: #6b7280;
+  color: #DED4D1;
 `
 
 const itemQuantityStyles = css`
   font-weight: 600;
-  color: #6b7280;
+  color: #4C4A48;
   font-size: 1rem;
   margin-left: 1rem;
 `
@@ -298,7 +276,7 @@ const itemQuantityStyles = css`
 const emptyStateStyles = css`
   text-align: center;
   padding: 4rem 2rem;
-  color: #6b7280;
+  color: #DED4D1;
   font-size: 1.125rem;
 `
 
@@ -309,14 +287,14 @@ const paginationContainerStyles = css`
   justify-content: space-between;
   align-items: center;
   padding: 1rem;
-  background-color: #ffffff;
-  border: 2px solid #e5e7eb;
+  background-color: #FFFDFE;
+  border: 2px solid #E3E2E3;
   border-radius: 0.75rem;
 `
 
 const paginationInfoStyles = css`
   font-size: 0.875rem;
-  color: #6b7280;
+  color: #4C4A48;
   font-weight: 500;
 `
 
@@ -327,12 +305,12 @@ const paginationButtonsStyles = css`
 
 const paginationButtonStyles = css`
   padding: 0.5rem 1rem;
-  border: 1.5px solid #e5e7eb;
+  border: 1.5px solid #E3E2E3;
   border-radius: 0.375rem;
   font-size: 0.875rem;
   font-weight: 500;
-  color: #111827;
-  background-color: #ffffff;
+  color: #4C4A48;
+  background-color: #FFFDFE;
   cursor: pointer;
   transition: all 0.15s;
   display: flex;
@@ -340,13 +318,13 @@ const paginationButtonStyles = css`
   gap: 0.5rem;
 
   &:hover:not(:disabled) {
-    border-color: #059669;
-    background-color: #f0fdf4;
-    color: #059669;
+    border-color: #64483E;
+    background-color: #F8F3F2;
+    color: #64483E;
   }
 
   &:disabled {
-    background-color: #f3f4f6;
+    background-color: #F0EAE5;
     cursor: not-allowed;
     opacity: 0.5;
   }
@@ -469,10 +447,11 @@ export default function Stats() {
 
   return (
     <div className={containerStyles}>
-      <div className={headerStyles}>
-        <h1 className={titleStyles}>Order Management</h1>
-        <p className={subtitleStyles}>Monitor and manage customer orders in real-time</p>
-      </div>
+      
+      <Header 
+        heading="Order Management" 
+        description="Monitor and manage customer orders in real-time" 
+      />
 
       {isLoading && <Loader message="Loading orders..." />}
 

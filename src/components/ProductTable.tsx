@@ -5,12 +5,12 @@ import { useState, useMemo } from "react"
 import { MdDelete, MdEdit, MdSearch, MdFilterList } from "react-icons/md"
 import AllergenFilter from "./AllergenFilter"
 import CategoryFilter from "./CategoryFilter"
-import { MenuItem } from "@/types/menu.types"
-import { Category } from "@/types/categories.types"
-import { Allergen } from "@/types/allergens.types"
- 
+import type { MenuItem } from "@/types/menu.types"
+import type { Category } from "@/types/categories.types"
+import type { Allergen } from "@/types/allergens.types"
+
 const paperStyles = css`
-  background: white;
+  background: #FFFDFE;
   border-radius: 12px;
   padding: 24px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
@@ -25,13 +25,13 @@ const filterHeaderStyles = css`
 `
 
 const filterIconStyles = css`
-  color: #666;
+  color: #4C4A48;
 `
 
 const filterTitleStyles = css`
   font-weight: 600;
   font-size: 14px;
-  color: #1a1a1a;
+  color: #4C4A48;
   margin: 0;
 `
 
@@ -45,17 +45,17 @@ const textInputStyles = css`
   width: 100%;
   padding: 10px 12px 10px 40px;
   border-radius: 8px;
-  border: 1px solid #d4d4d4;
+  border: 1px solid #DED4D1;
   font-size: 14px;
   outline: none;
   transition: border-color 0.2s;
 
   &:focus {
-    border-color: #1a1a1a;
+    border-color: #64483E;
   }
 
   &::placeholder {
-    color: #999;
+    color: #DED4D1;
   }
 `
 
@@ -69,7 +69,7 @@ const searchIconStyles = css`
   left: 12px;
   top: 50%;
   transform: translateY(-50%);
-  color: #666;
+  color: #4C4A48;
   pointer-events: none;
 `
 
@@ -91,21 +91,21 @@ const selectStyles = css`
   width: 100%;
   padding: 10px 12px;
   border-radius: 8px;
-  border: 1px solid #d4d4d4;
+  border: 1px solid #DED4D1;
   font-size: 14px;
   outline: none;
-  background: white;
+  background: #FFFDFE;
   cursor: pointer;
   transition: border-color 0.2s;
 
   &:focus {
-    border-color: #1a1a1a;
+    border-color: #64483E;
   }
 `
 
 const dividerStyles = css`
   height: 1px;
-  background: #e5e5e5;
+  background: #E3E2E3;
   border: none;
   margin: 16px 0;
 `
@@ -118,7 +118,7 @@ const filterSummaryStyles = css`
 
 const textSmallStyles = css`
   font-size: 14px;
-  color: #666;
+  color: #4C4A48;
   font-weight: 500;
   margin: 0;
 `
@@ -126,7 +126,7 @@ const textSmallStyles = css`
 const buttonSubtleStyles = css`
   background: transparent;
   border: none;
-  color: #1a1a1a;
+  color: #64483E;
   font-size: 12px;
   font-weight: 500;
   padding: 6px 12px;
@@ -135,48 +135,46 @@ const buttonSubtleStyles = css`
   transition: background-color 0.2s;
 
   &:hover {
-    background-color: #f5f5f5;
+    background-color: #F0EAE5;
   }
 `
 
 const tableWrapperStyles = css`
   overflow-x: auto;
+  background-color: #FFFDFE;
   border-radius: 12px;
-  border: 1px solid #e5e5e5;
+  box-shadow: 0 2px 6px rgba(76, 74, 72, 0.08);
+  border: 1px solid #E3E2E3;
 `
 
 const tableStyles = css`
   width: 100%;
   border-collapse: collapse;
-  background: white;
 `
 
 const theadStyles = css`
-  background-color: #1a1a1a;
+  background-color: #F8F3F2;
 `
 
 const thStyles = css`
-  color: #ffffff;
+  color: #4C4A48;
   font-weight: 600;
   font-size: 13px;
-  text-transform: uppercase;
+  
   letter-spacing: 0.5px;
   padding: 16px;
   text-align: left;
 `
 
 const tbodyStyles = css`
-  & tr {
-    transition: all 0.15s ease;
-    border-bottom: 1px solid #f5f5f5;
-  }
+    transition: background-color 0.2s ease;
 
   & tr:nth-child(even) {
-    background-color: #fafafa;
+     background-color: #F8F3F2;
   }
 
   & tr:hover {
-    background-color: #f5f5f5;
+    background-color: #F0EAE5;
   }
 `
 
@@ -190,7 +188,7 @@ const imageContainerStyles = css`
   height: 48px;
   overflow: hidden;
   border-radius: 8px;
-  border: 1px solid #e5e5e5;
+  border: 1px solid #E3E2E3;
   flex-shrink: 0;
 `
 
@@ -203,8 +201,8 @@ const imageStyles = css`
 const noImageStyles = css`
   width: 48px;
   height: 48px;
-  background-color: #f5f5f5;
-  border: 1px solid #e5e5e5;
+  background-color: #F8F3F2;
+  border: 1px solid #E3E2E3;
   border-radius: 8px;
   display: flex;
   align-items: center;
@@ -214,23 +212,23 @@ const noImageStyles = css`
 
 const noImageTextStyles = css`
   font-size: 12px;
-  color: #999;
+  color: #DED4D1;
   font-weight: 500;
 `
 
 const productNameStyles = css`
   font-weight: 600;
   font-size: 14px;
-  color: #1a1a1a;
+  color: #4C4A48;
   margin: 0;
 `
 
 const badgeStyles = css`
   display: inline-block;
   padding: 6px 12px;
-  background-color: #f5f5f5;
-  color: #1a1a1a;
-  border: 1px solid #e5e5e5;
+  background-color: #F8F3F2;
+  color: #4C4A48;
+  border: 1px solid #E3E2E3;
   border-radius: 6px;
   font-weight: 500;
   font-size: 13px;
@@ -239,7 +237,7 @@ const badgeStyles = css`
 const priceStyles = css`
   font-weight: 600;
   font-size: 14px;
-  color: #1a1a1a;
+  color: #4C4A48;
   margin: 0;
 `
 
@@ -252,9 +250,9 @@ const actionButtonStyles = css`
   width: 36px;
   height: 36px;
   border-radius: 6px;
-  border: 1px solid #e5e5e5;
-  background: #fafafa;
-  color: #666;
+  border: 1px solid #E3E2E3;
+  background: #F8F3F2;
+  color: #4C4A48;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -262,9 +260,9 @@ const actionButtonStyles = css`
   transition: all 0.2s ease;
 
   &:hover {
-    background-color: #1a1a1a;
-    border-color: #1a1a1a;
-    color: #ffffff;
+    background-color: #64483E;
+    border-color: #64483E;
+    color: #FFFDFE;
   }
 `
 
@@ -305,16 +303,16 @@ const paginationButtonStyles = css`
   height: 36px;
   padding: 0 12px;
   border-radius: 6px;
-  border: 1px solid #d4d4d4;
-  background: white;
-  color: #1a1a1a;
+  border: 1px solid #DED4D1;
+  background: #FFFDFE;
+  color: #4C4A48;
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
 
   &:hover:not(:disabled) {
-    background-color: #f5f5f5;
+    background-color: #F0EAE5;
   }
 
   &:disabled {
@@ -323,9 +321,9 @@ const paginationButtonStyles = css`
   }
 
   &.active {
-    background-color: #1a1a1a;
-    color: white;
-    border-color: #1a1a1a;
+    background-color: #64483E;
+    color: #FFFDFE;
+    border-color: #64483E;
   }
 `
 
@@ -350,7 +348,7 @@ const modalOverlayStyles = css`
 `
 
 const modalContentStyles = css`
-  background: white;
+  background: #FFFDFE;
   border-radius: 12px;
   padding: 24px;
   max-width: 500px;
@@ -373,12 +371,12 @@ const modalContentStyles = css`
 const modalTitleStyles = css`
   font-weight: 600;
   font-size: 18px;
-  color: #1a1a1a;
+  color: #4C4A48;
   margin: 0 0 16px 0;
 `
 
 const modalTextStyles = css`
-  color: #666;
+  color: #4C4A48;
   font-size: 14px;
   margin: 0 0 24px 0;
   line-height: 1.5;
@@ -393,16 +391,16 @@ const modalActionsStyles = css`
 const buttonDefaultStyles = css`
   padding: 10px 20px;
   border-radius: 6px;
-  border: 1px solid #d4d4d4;
-  background: white;
-  color: #1a1a1a;
+  border: 1px solid #DED4D1;
+  background: #FFFDFE;
+  color: #4C4A48;
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
 
   &:hover {
-    background-color: #f5f5f5;
+    background-color: #F0EAE5;
   }
 `
 
@@ -461,9 +459,9 @@ export default function ProductTable({
 
       if (allergenFilter.length > 0) {
         const productAllergens = product.allergens || []
-         const hasAllAllergens = allergenFilter.every((allergenId) =>
-             productAllergens.some((a) => a.id === String(allergenId))
-          );
+        const hasAllAllergens = allergenFilter.every((allergenId) =>
+          productAllergens.some((a) => a.id === String(allergenId)),
+        )
 
         if (!hasAllAllergens) return false
       }
@@ -485,7 +483,7 @@ export default function ProductTable({
     }
   }
 
-  const getCategoryName = (categoryId:string) => {
+  const getCategoryName = (categoryId: string) => {
     const category = categories.find((cat) => String(cat.id) === String(categoryId))
     return category ? category.name : "Unknown"
   }
@@ -496,7 +494,6 @@ export default function ProductTable({
         {product.image ? (
           <div className={imageContainerStyles}>
             <img src={product.image || "/placeholder.svg"} alt={product.name} className={imageStyles} />
-             
           </div>
         ) : (
           <div className={noImageStyles}>
