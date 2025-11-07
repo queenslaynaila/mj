@@ -104,6 +104,16 @@ const inputStyles = css`
   color: #4C4A48;
   outline: none;
   transition: border-color 0.2s ease-in-out;
+   /* Remove spinner arrows from number inputs */
+  &[type="number"]::-webkit-inner-spin-button,
+  &[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  &[type="number"] {
+    -moz-appearance: textfield;
+  }
 
   &:focus {
     border-color: #64483E;
@@ -1134,9 +1144,7 @@ export default function ProductMultiStepForm({
                 type="number"
                 placeholder="0.00"
                 value={formData.price}
-                onChange={(e) => handleChange("price", Number.parseFloat(e.target.value) || 0)}
-                min={0}
-                step={0.5}
+                onChange={(e) => handleChange("price", Number.parseFloat(e.target.value))}
                 className={inputStyles}
               />
             </div>
@@ -1320,9 +1328,8 @@ export default function ProductMultiStepForm({
                           type="number"
                           placeholder="0.00"
                           value={variant.price || ""}
-                          onChange={(e) => updateVariant(index, "price", Number.parseFloat(e.target.value) || 0)}
+                          onChange={(e) => updateVariant(index, "price", Number.parseFloat(e.target.value))}
                           min={0}
-                          step={0.5}
                           className={variantInputTableStyles}
                         />
                       </td>

@@ -178,7 +178,7 @@ const tbodyStyles = css`
 `
 
 const tdStyles = css`
-  padding: 16px;
+  padding: 12px;
   font-size: 14px;
   color: #4C4A48;
   border-top: 1px solid #E3E2E3;
